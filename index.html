@@ -9,24 +9,28 @@
 *{box-sizing:border-box}
 
 :root{
---blue:#2563eb;
---purple:#7c3aed;
---green:#16a34a;
---orange:#ea580c;
+--primary:#1d4ed8;
+--primary2:#4f46e5;
+--green:#15803d;
+--orange:#c2410c;
 --red:#dc2626;
---dark:#172033;
+--dark:#0f172a;
+--text:#334155;
 --muted:#64748b;
 --line:#e2e8f0;
---bg:#f4f7fb;
+--bg:#f1f5f9;
+--white:#fff;
 }
 
 body{
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
-background:linear-gradient(135deg,#f7f9ff,#eef6ff,#faf5ff);
+background:#f1f5f9;
 color:var(--dark);
 min-height:100vh;
 }
+
+/* LOGIN */
 
 .login-screen{
 min-height:100vh;
@@ -34,81 +38,86 @@ display:flex;
 align-items:center;
 justify-content:center;
 padding:20px;
-background:linear-gradient(135deg,#f7f9ff,#eef6ff,#faf5ff);
+background:
+radial-gradient(circle at top left,#dbeafe 0,#f8fafc 38%),
+linear-gradient(135deg,#f8fafc,#eef2ff);
 }
 
 .login-box{
 width:100%;
-max-width:400px;
-background:white;
-border:1px solid var(--line);
-border-radius:20px;
-padding:32px;
-box-shadow:0 15px 40px #1e293b18;
+max-width:410px;
+background:#fff;
+border:1px solid #e2e8f0;
+border-radius:22px;
+padding:35px;
+box-shadow:0 25px 60px rgba(15,23,42,.12);
 }
 
 .login-logo{
 text-align:center;
-font-size:28px;
-font-weight:800;
+font-size:27px;
+font-weight:900;
+letter-spacing:.5px;
 margin-bottom:8px;
 }
 
-.login-logo span{color:var(--blue)}
+.login-logo span{color:var(--primary)}
 
 .login-title{
 text-align:center;
-font-size:21px;
+font-size:22px;
+margin:0;
 font-weight:800;
-margin:0 0 6px;
 }
 
 .login-sub{
 text-align:center;
 font-size:12px;
 color:var(--muted);
-margin-bottom:25px;
+margin:7px 0 25px;
 }
 
-.login-field{margin-bottom:15px}
+.login-field{margin-bottom:16px}
 
 .login-field label{
 display:block;
 font-size:12px;
-font-weight:bold;
-color:#475569;
+font-weight:700;
 margin-bottom:7px;
+color:#475569;
 }
 
 .login-field input{
 width:100%;
-height:45px;
-padding:9px 12px;
+height:46px;
+padding:10px 13px;
 border:1px solid #cbd5e1;
 border-radius:10px;
 font-size:14px;
-background:#fbfdff;
 outline:none;
+background:#f8fafc;
 }
 
 .login-field input:focus{
-border-color:#6366f1;
-box-shadow:0 0 0 3px #6366f120;
-background:white;
+border-color:var(--primary);
+box-shadow:0 0 0 3px #2563eb20;
+background:#fff;
 }
 
 .login-button{
 width:100%;
-height:45px;
+height:46px;
 border:0;
 border-radius:10px;
-background:linear-gradient(135deg,#2563eb,#7c3aed);
-color:white;
-font-weight:bold;
+background:linear-gradient(135deg,var(--primary),var(--primary2));
+color:#fff;
 font-size:14px;
+font-weight:800;
 cursor:pointer;
-margin-top:5px;
+margin-top:4px;
 }
+
+.login-button:hover{opacity:.94}
 
 .login-error{
 display:none;
@@ -126,110 +135,100 @@ margin-bottom:15px;
 text-align:center;
 font-size:11px;
 color:#94a3b8;
-margin-top:20px;
+margin-top:22px;
 }
 
 #app{display:none}
 
+/* MAIN */
+
 .container{
 max-width:1450px;
 margin:auto;
-padding:22px;
+padding:20px;
 }
 
 .topbar{
 display:flex;
-justify-content:space-between;
 align-items:center;
+justify-content:space-between;
 gap:15px;
 margin-bottom:18px;
 flex-wrap:wrap;
 }
 
 .brand{
-font-weight:800;
-font-size:23px;
+font-size:22px;
+font-weight:900;
 letter-spacing:.3px;
 }
 
-.brand span{color:var(--blue)}
+.brand span{color:var(--primary)}
 
 .top-actions{
 display:flex;
 align-items:center;
-gap:14px;
+gap:15px;
 }
 
 .live-panel{
 display:flex;
-gap:14px;
 align-items:center;
-flex-wrap:wrap;
-}
-
-.live-box,
-.date-box{
-background:transparent;
-border:0;
-border-radius:0;
-padding:0;
-box-shadow:none;
+gap:16px;
 font-size:12px;
-color:#475569;
+color:var(--muted);
 }
 
 .live-dot{
 display:inline-block;
 width:7px;
 height:7px;
-border-radius:50%;
 background:#22c55e;
+border-radius:50%;
 margin:0 4px;
-box-shadow:0 0 0 3px #22c55e22;
+box-shadow:0 0 0 3px #22c55e20;
 }
 
 #liveTime{
-font-weight:bold;
-font-size:12px;
+font-weight:800;
 color:#334155;
 }
 
-#liveDate{
-font-size:12px;
-color:#64748b;
-}
-
 .logout-btn{
-background:#fee2e2;
-color:#b91c1c;
+background:#fff;
 border:1px solid #fecaca;
+color:#b91c1c;
 border-radius:9px;
 padding:8px 13px;
 font-size:12px;
-font-weight:bold;
+font-weight:700;
 cursor:pointer;
 }
 
+/* HEADER */
+
 .header{
-background:#fff1e6;
-color:#111827;
-border:1px solid #fed7aa;
+background:linear-gradient(135deg,#0f172a,#1e3a8a);
+color:#fff;
 border-radius:18px;
-padding:28px 30px;
+padding:27px 30px;
 margin-bottom:20px;
-box-shadow:0 8px 22px #ea580c18;
+box-shadow:0 12px 30px rgba(15,23,42,.14);
 }
 
 .header h1{
 margin:0 0 7px;
-font-size:30px;
-color:#111827;
+font-size:29px;
+letter-spacing:.3px;
 }
 
 .header p{
 margin:0;
-color:#4b5563;
+color:#dbeafe;
+font-size:13px;
 }
+
+/* CARDS */
 
 .cards{
 display:grid;
@@ -239,28 +238,46 @@ margin-bottom:20px;
 }
 
 .card{
-background:white;
+background:#fff;
 border:1px solid var(--line);
 border-radius:16px;
 padding:20px;
-box-shadow:0 5px 18px #1e293b0d;
+box-shadow:0 5px 18px rgba(15,23,42,.05);
+position:relative;
+overflow:hidden;
 }
 
-.card:nth-child(1){border-top:4px solid var(--blue)}
+.card:after{
+content:"";
+position:absolute;
+right:-25px;
+top:-25px;
+width:80px;
+height:80px;
+border-radius:50%;
+background:#eff6ff;
+}
+
+.card:nth-child(2):after{background:#f0fdf4}
+.card:nth-child(3):after{background:#fff7ed}
+
+.card:nth-child(1){border-top:4px solid var(--primary)}
 .card:nth-child(2){border-top:4px solid var(--green)}
 .card:nth-child(3){border-top:4px solid var(--orange)}
 
 .card .label{
-font-size:12px;
+font-size:11px;
+font-weight:800;
 color:var(--muted);
-font-weight:bold;
-letter-spacing:.4px;
+letter-spacing:.5px;
 }
 
 .card .number{
-font-size:28px;
-font-weight:800;
-margin-top:8px;
+font-size:29px;
+font-weight:900;
+margin-top:9px;
+position:relative;
+z-index:2;
 }
 
 .card .sub{
@@ -269,31 +286,34 @@ color:#94a3b8;
 margin-top:5px;
 }
 
+/* SECTION */
+
 .section{
-background:white;
+background:#fff;
 border:1px solid var(--line);
 border-radius:16px;
 padding:22px;
 margin-bottom:20px;
-box-shadow:0 5px 18px #1e293b0c;
+box-shadow:0 5px 18px rgba(15,23,42,.045);
 }
 
 .section h2{
+font-size:18px;
 margin:0 0 18px;
-font-size:19px;
+font-weight:800;
 }
 
 .row{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:18px;
+gap:17px;
 margin-bottom:18px;
 }
 
 .field label{
 display:block;
 font-size:12px;
-font-weight:bold;
+font-weight:700;
 color:#475569;
 margin-bottom:7px;
 }
@@ -303,17 +323,19 @@ width:100%;
 height:44px;
 padding:9px 12px;
 border:1px solid #cbd5e1;
-border-radius:10px;
+border-radius:9px;
 font-size:14px;
-background:#fbfdff;
+background:#f8fafc;
 outline:none;
 }
 
 input:focus{
-border-color:#6366f1;
-box-shadow:0 0 0 3px #6366f120;
-background:white;
+border-color:var(--primary);
+box-shadow:0 0 0 3px #2563eb20;
+background:#fff;
 }
+
+/* PALLET BOX */
 
 .pallet-grid{
 display:grid;
@@ -324,7 +346,7 @@ gap:18px;
 .pallet-box{
 border:1px solid #bfdbfe;
 border-radius:14px;
-padding:17px;
+padding:18px;
 background:linear-gradient(145deg,#f8fbff,#eff6ff);
 }
 
@@ -334,12 +356,14 @@ background:linear-gradient(145deg,#fbfffc,#f0fdf4);
 }
 
 .pallet-box h3{
-margin:0 0 15px;
+margin:0 0 16px;
 font-size:16px;
 }
 
 .pallet-box:first-child h3{color:#2563eb}
 .pallet-box:nth-child(2) h3{color:#15803d}
+
+/* BUTTONS */
 
 .button-row{
 display:flex;
@@ -351,23 +375,21 @@ flex-wrap:wrap;
 
 button{
 border:0;
-border-radius:10px;
+border-radius:9px;
 padding:11px 18px;
-font-weight:bold;
+font-weight:800;
 cursor:pointer;
-transition:.15s;
+font-size:12px;
 }
 
-button:hover{transform:translateY(-1px)}
-
 .primary{
-background:linear-gradient(135deg,#2563eb,#7c3aed);
-color:white;
+background:linear-gradient(135deg,var(--primary),var(--primary2));
+color:#fff;
 }
 
 .secondary{
 background:#eef2f7;
-color:#24324a;
+color:#334155;
 }
 
 .danger{
@@ -377,10 +399,22 @@ color:#b91c1c;
 
 .small{
 padding:7px 10px;
-font-size:12px;
+font-size:11px;
 }
 
-.table-wrap{overflow-x:auto}
+.note{
+font-size:11px;
+color:#64748b;
+margin-top:10px;
+}
+
+/* TABLE */
+
+.table-wrap{
+overflow-x:auto;
+border:1px solid #e2e8f0;
+border-radius:10px;
+}
 
 table{
 width:100%;
@@ -393,19 +427,29 @@ th,td{
 padding:11px 10px;
 border-bottom:1px solid #e5e7eb;
 text-align:left;
-font-size:13px;
+font-size:12px;
+white-space:nowrap;
 }
 
 th{
 background:#f8fafc;
-font-size:12px;
+font-size:11px;
+font-weight:800;
 color:#475569;
+position:sticky;
+top:0;
 }
 
-tbody tr:hover{background:#f8fbff}
+tbody tr:hover{
+background:#f8fbff;
+}
+
+tbody tr:last-child td{
+border-bottom:0;
+}
 
 .total-row td{
-font-weight:bold;
+font-weight:800;
 background:#f8fafc;
 }
 
@@ -415,24 +459,28 @@ color:#64748b;
 padding:28px;
 }
 
-.note{
-font-size:12px;
-color:#64748b;
-margin-top:10px;
-}
-
 footer{
 text-align:center;
-color:#64748b;
-font-size:12px;
-padding:5px 0 20px;
+color:#94a3b8;
+font-size:11px;
+padding:4px 0 20px;
 }
 
+/* MOBILE */
+
 @media(max-width:1000px){
-.cards{grid-template-columns:repeat(2,1fr)}
+
+.cards{
+grid-template-columns:repeat(2,1fr);
+}
+
 }
 
 @media(max-width:800px){
+
+.container{
+padding:12px;
+}
 
 .cards,
 .row,
@@ -440,19 +488,16 @@ padding:5px 0 20px;
 grid-template-columns:1fr;
 }
 
-.container{padding:12px}
+.header{
+padding:22px;
+}
 
-.header{padding:22px}
+.header h1{
+font-size:23px;
+}
 
-.header h1{font-size:24px}
-
-.topbar{align-items:flex-start}
-
-.live-panel{width:100%}
-
-.live-box,
-.date-box{
-flex:initial;
+.topbar{
+align-items:flex-start;
 }
 
 .top-actions{
@@ -460,11 +505,41 @@ width:100%;
 justify-content:space-between;
 }
 
+.live-panel{
+gap:10px;
+}
+
+.section{
+padding:16px;
+}
+
+}
+
+@media(max-width:520px){
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.login-box{
+padding:27px 21px;
+}
+
+.brand{
+font-size:19px;
+}
+
+.header p{
+line-height:1.5;
+}
+
 }
 </style>
 </head>
 
 <body>
+
+<!-- LOGIN -->
 
 <div class="login-screen" id="loginScreen">
 
@@ -474,7 +549,7 @@ justify-content:space-between;
 📦 <span>PALLET</span> TRACKER
 </div>
 
-<h2 class="login-title">Login</h2>
+<h2 class="login-title">Staff Login</h2>
 
 <div class="login-sub">
 Warehouse Asset Control System
@@ -485,27 +560,21 @@ Invalid username or password.
 </div>
 
 <div class="login-field">
-
 <label>Username</label>
-
 <input
 type="text"
 id="loginUsername"
 placeholder="Enter username"
 autocomplete="username">
-
 </div>
 
 <div class="login-field">
-
 <label>Password</label>
-
 <input
 type="password"
 id="loginPassword"
 placeholder="Enter password"
 autocomplete="current-password">
-
 </div>
 
 <button
@@ -516,16 +585,20 @@ onclick="login()">
 </button>
 
 <div class="login-footer">
-©️ 2026 Pallet Tracker System
+© 2026 Pallet Tracker System
 </div>
 
 </div>
 </div>
 
+
+<!-- APPLICATION -->
 
 <div id="app">
 
 <div class="container">
+
+<!-- TOP BAR -->
 
 <div class="topbar">
 
@@ -537,13 +610,13 @@ onclick="login()">
 
 <div class="live-panel">
 
-<div class="live-box">
+<div>
 🟢 <b>LIVE</b>
 <span class="live-dot"></span>
 <span id="liveTime">--:--:--</span>
 </div>
 
-<div class="date-box">
+<div>
 📅 <span id="liveDate">--/--/----</span>
 </div>
 
@@ -559,6 +632,8 @@ onclick="logout()">
 </div>
 
 
+<!-- HEADER -->
+
 <div class="header">
 
 <h1>PALLET TRACKER</h1>
@@ -570,6 +645,8 @@ Warehouse Asset Control • Pallet Section • MR Logistics • AL Kamil
 </div>
 
 
+<!-- SUMMARY -->
+
 <div class="cards">
 
 <div class="card">
@@ -578,7 +655,9 @@ Warehouse Asset Control • Pallet Section • MR Logistics • AL Kamil
 CURRENT PALLET STOCK
 </div>
 
-<div class="number" id="totalStock">0</div>
+<div class="number" id="totalStock">
+0
+</div>
 
 <div class="sub">
 Pallets Available
@@ -610,7 +689,9 @@ Current Stock Value
 TOTAL TRANSACTIONS
 </div>
 
-<div class="number" id="transactionCount">0</div>
+<div class="number" id="transactionCount">
+0
+</div>
 
 <div class="sub">
 Saved Transactions
@@ -620,6 +701,8 @@ Saved Transactions
 
 </div>
 
+
+<!-- ENTRY -->
 
 <div class="section">
 
@@ -631,7 +714,9 @@ Saved Transactions
 
 <label>Date</label>
 
-<input type="date" id="date">
+<input
+type="date"
+id="date">
 
 </div>
 
@@ -662,6 +747,8 @@ placeholder="Enter warehouse location">
 
 <div class="pallet-grid">
 
+<!-- WOOD -->
+
 <div class="pallet-box">
 
 <h3>🟦 Wooden Pallet</h3>
@@ -670,48 +757,37 @@ placeholder="Enter warehouse location">
 style="grid-template-columns:1fr 1fr">
 
 <div class="field">
-
 <label>Opening</label>
-
 <input
 type="number"
 id="woodOpening"
 min="0"
 value="0"
 oninput="calculate()">
-
 </div>
 
 <div class="field">
-
 <label>Out</label>
-
 <input
 type="number"
 id="woodOut"
 min="0"
 value="0"
 oninput="calculate()">
-
 </div>
 
 <div class="field">
-
 <label>Return</label>
-
 <input
 type="number"
 id="woodReturn"
 min="0"
 value="0"
 oninput="calculate()">
-
 </div>
 
 <div class="field">
-
 <label>Unit Price (OMR)</label>
-
 <input
 type="number"
 id="woodPrice"
@@ -719,12 +795,13 @@ min="0"
 step="0.001"
 value="0"
 oninput="calculate()">
-
 </div>
 
 </div>
 </div>
 
+
+<!-- PLASTIC -->
 
 <div class="pallet-box">
 
@@ -734,48 +811,37 @@ oninput="calculate()">
 style="grid-template-columns:1fr 1fr">
 
 <div class="field">
-
 <label>Opening</label>
-
 <input
 type="number"
 id="plasticOpening"
 min="0"
 value="0"
 oninput="calculate()">
-
 </div>
 
 <div class="field">
-
 <label>Out</label>
-
 <input
 type="number"
 id="plasticOut"
 min="0"
 value="0"
 oninput="calculate()">
-
 </div>
 
 <div class="field">
-
 <label>Return</label>
-
 <input
 type="number"
 id="plasticReturn"
 min="0"
 value="0"
 oninput="calculate()">
-
 </div>
 
 <div class="field">
-
 <label>Unit Price (OMR)</label>
-
 <input
 type="number"
 id="plasticPrice"
@@ -783,7 +849,6 @@ min="0"
 step="0.001"
 value="0"
 oninput="calculate()">
-
 </div>
 
 </div>
@@ -815,6 +880,8 @@ Current Stock = Opening − Out + Return
 
 </div>
 
+
+<!-- BALANCE -->
 
 <div class="section">
 
@@ -869,20 +936,30 @@ Current Stock = Opening − Out + Return
 <tr class="total-row">
 
 <td>TOTAL</td>
+
 <td id="totalOpening">0</td>
 <td id="totalOut">0</td>
 <td id="totalReturn">0</td>
 <td id="tableTotalStock">0</td>
+
 <td>—</td>
-<td id="tableTotalValue">OMR 0.000</td>
+
+<td id="tableTotalValue">
+OMR 0.000
+</td>
 
 </tr>
 
 </tbody>
+
 </table>
-</div>
+
 </div>
 
+</div>
+
+
+<!-- TRANSACTIONS -->
 
 <div class="section">
 
@@ -905,6 +982,7 @@ onclick="clearAllTransactions()">
 </button>
 
 </div>
+
 
 <div class="table-wrap">
 
@@ -941,24 +1019,23 @@ onclick="clearAllTransactions()">
 </table>
 
 </div>
+
 </div>
 
 
 <footer>
-©️ 2026 Pallet Tracker System • Live Local Dashboard • All Rights Reserved
+© 2026 Pallet Tracker System • Warehouse Asset Control • All Rights Reserved
 </footer>
 
 </div>
 </div>
 
 
+<!-- SUPABASE -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-
-/* =========================
-   SUPABASE CONNECTION
-========================= */
 
 const SUPABASE_URL =
 "https://hneqrtspwfacnqcszwpb.supabase.co";
@@ -981,9 +1058,7 @@ SUPABASE_KEY
 }
 
 
-/* =========================
-   LOGIN
-========================= */
+/* LOGIN */
 
 const LOGIN_USERNAME = "hridai";
 const LOGIN_PASSWORD = "2328";
@@ -1031,9 +1106,7 @@ await loadTransactions();
 }
 
 
-/* =========================
-   SHOW APP
-========================= */
+/* SHOW APP */
 
 function showApp(){
 
@@ -1050,9 +1123,7 @@ updateLiveClock();
 }
 
 
-/* =========================
-   SHOW LOGIN
-========================= */
+/* SHOW LOGIN */
 
 function showLogin(){
 
@@ -1067,9 +1138,7 @@ document.getElementById(
 }
 
 
-/* =========================
-   LOGOUT
-========================= */
+/* LOGOUT */
 
 function logout(){
 
@@ -1098,9 +1167,7 @@ showLogin();
 }
 
 
-/* =========================
-   ENTER KEY LOGIN
-========================= */
+/* ENTER KEY */
 
 document.getElementById(
 "loginPassword"
@@ -1115,9 +1182,7 @@ login();
 });
 
 
-/* =========================
-   CHECK LOGIN
-========================= */
+/* CHECK LOGIN */
 
 async function checkLogin(){
 
@@ -1144,25 +1209,20 @@ showLogin();
 }
 
 
-/* =========================
-   DATABASE DATA
-========================= */
+/* DATA */
 
 let transactions = [];
-
 let editIndex = -1;
 
 
-/* =========================
-   LOAD DATABASE
-========================= */
+/* LOAD DATABASE */
 
 async function loadTransactions(){
 
 if(!db){
 
 alert(
-"Supabase connection could not start. Please check your internet connection."
+"Supabase connection could not start."
 );
 
 return;
@@ -1183,7 +1243,7 @@ const error = result.error;
 
 if(error){
 
-console.error("Supabase error:",error);
+console.error(error);
 
 alert(
 "Database error:\n" +
@@ -1193,7 +1253,6 @@ alert(
 return;
 
 }
-
 
 transactions =
 (data || []).map(function(t){
@@ -1229,16 +1288,14 @@ wout:wout,
 wr:wr,
 wp:Number(t.wp) || 0,
 
-ws:
-wo - wout + wr,
+ws:wo-wout+wr,
 
 po:po,
 pout:pout,
 pr:pr,
 pp:Number(t.pp) || 0,
 
-ps:
-po - pout + pr,
+ps:po-pout+pr,
 
 totalStock:
 Number(t.total_stock) || 0,
@@ -1249,7 +1306,6 @@ Number(t.total_value) || 0
 };
 
 });
-
 
 renderTransactions();
 
@@ -1270,196 +1326,117 @@ alert(
 }
 
 
-/* =========================
-   DATABASE TOTALS
-========================= */
+/* DATABASE TOTALS */
 
 function calculateTotalsFromDatabase(){
 
-let woodOpening = 0;
-let woodOut = 0;
-let woodReturn = 0;
+let woodOpening=0;
+let woodOut=0;
+let woodReturn=0;
 
-let plasticOpening = 0;
-let plasticOut = 0;
-let plasticReturn = 0;
+let plasticOpening=0;
+let plasticOut=0;
+let plasticReturn=0;
 
-let woodPrice = 0;
-let plasticPrice = 0;
+let woodPrice=0;
+let plasticPrice=0;
 
+transactions.forEach(function(t){
 
-for(
-let i = 0;
-i < transactions.length;
-i++
-){
+woodOpening += Number(t.wo)||0;
+woodOut += Number(t.wout)||0;
+woodReturn += Number(t.wr)||0;
 
-const t = transactions[i];
-
-woodOpening += Number(t.wo) || 0;
-woodOut += Number(t.wout) || 0;
-woodReturn += Number(t.wr) || 0;
-
-plasticOpening += Number(t.po) || 0;
-plasticOut += Number(t.pout) || 0;
-plasticReturn += Number(t.pr) || 0;
+plasticOpening += Number(t.po)||0;
+plasticOut += Number(t.pout)||0;
+plasticReturn += Number(t.pr)||0;
 
 if(
-woodPrice === 0 &&
-Number(t.wp) > 0
+woodPrice===0 &&
+Number(t.wp)>0
 ){
-
-woodPrice =
-Number(t.wp);
-
+woodPrice=Number(t.wp);
 }
 
 if(
-plasticPrice === 0 &&
-Number(t.pp) > 0
+plasticPrice===0 &&
+Number(t.pp)>0
 ){
-
-plasticPrice =
-Number(t.pp);
-
+plasticPrice=Number(t.pp);
 }
 
-}
-
+});
 
 const woodStock =
-woodOpening -
-woodOut +
-woodReturn;
+woodOpening-woodOut+woodReturn;
 
 const plasticStock =
-plasticOpening -
-plasticOut +
-plasticReturn;
+plasticOpening-plasticOut+plasticReturn;
 
 const woodValue =
-woodStock * woodPrice;
+woodStock*woodPrice;
 
 const plasticValue =
-plasticStock * plasticPrice;
+plasticStock*plasticPrice;
 
 const totalStock =
-woodStock + plasticStock;
+woodStock+plasticStock;
 
 const totalValue =
-woodValue + plasticValue;
+woodValue+plasticValue;
 
 
 /* WOOD */
 
-document.getElementById(
-"woodResultOpening"
-).innerText = woodOpening;
-
-document.getElementById(
-"woodResultOut"
-).innerText = woodOut;
-
-document.getElementById(
-"woodResultReturn"
-).innerText = woodReturn;
-
-document.getElementById(
-"woodStock"
-).innerText = woodStock;
-
-document.getElementById(
-"woodResultPrice"
-).innerText =
-money(woodPrice);
-
-document.getElementById(
-"woodValue"
-).innerText =
-money(woodValue);
+document.getElementById("woodResultOpening").innerText=woodOpening;
+document.getElementById("woodResultOut").innerText=woodOut;
+document.getElementById("woodResultReturn").innerText=woodReturn;
+document.getElementById("woodStock").innerText=woodStock;
+document.getElementById("woodResultPrice").innerText=money(woodPrice);
+document.getElementById("woodValue").innerText=money(woodValue);
 
 
 /* PLASTIC */
 
-document.getElementById(
-"plasticResultOpening"
-).innerText =
-plasticOpening;
-
-document.getElementById(
-"plasticResultOut"
-).innerText =
-plasticOut;
-
-document.getElementById(
-"plasticResultReturn"
-).innerText =
-plasticReturn;
-
-document.getElementById(
-"plasticStock"
-).innerText =
-plasticStock;
-
-document.getElementById(
-"plasticResultPrice"
-).innerText =
-money(plasticPrice);
-
-document.getElementById(
-"plasticValue"
-).innerText =
-money(plasticValue);
+document.getElementById("plasticResultOpening").innerText=plasticOpening;
+document.getElementById("plasticResultOut").innerText=plasticOut;
+document.getElementById("plasticResultReturn").innerText=plasticReturn;
+document.getElementById("plasticStock").innerText=plasticStock;
+document.getElementById("plasticResultPrice").innerText=money(plasticPrice);
+document.getElementById("plasticValue").innerText=money(plasticValue);
 
 
 /* TOTAL */
 
-document.getElementById(
-"totalOpening"
-).innerText =
-woodOpening + plasticOpening;
+document.getElementById("totalOpening").innerText =
+woodOpening+plasticOpening;
 
-document.getElementById(
-"totalOut"
-).innerText =
-woodOut + plasticOut;
+document.getElementById("totalOut").innerText =
+woodOut+plasticOut;
 
-document.getElementById(
-"totalReturn"
-).innerText =
-woodReturn + plasticReturn;
+document.getElementById("totalReturn").innerText =
+woodReturn+plasticReturn;
 
-document.getElementById(
-"tableTotalStock"
-).innerText =
+document.getElementById("tableTotalStock").innerText =
 totalStock;
 
-document.getElementById(
-"tableTotalValue"
-).innerText =
+document.getElementById("tableTotalValue").innerText =
 money(totalValue);
 
-document.getElementById(
-"totalStock"
-).innerText =
+document.getElementById("totalStock").innerText =
 totalStock;
 
-document.getElementById(
-"totalValue"
-).innerText =
+document.getElementById("totalValue").innerText =
 money(totalValue);
 
 }
 
 
-/* =========================
-   LIVE CLOCK
-========================= */
+/* CLOCK */
 
 function updateLiveClock(){
 
-const now =
-new Date();
+const now=new Date();
 
 const time =
 now.toLocaleTimeString([],{
@@ -1482,182 +1459,97 @@ const dateElement =
 document.getElementById("liveDate");
 
 if(timeElement){
-timeElement.innerText = time;
+timeElement.innerText=time;
 }
 
 if(dateElement){
-dateElement.innerText = date;
+dateElement.innerText=date;
 }
 
 }
 
-setInterval(
-updateLiveClock,
-1000
-);
+setInterval(updateLiveClock,1000);
 
 
-/* =========================
-   NUMBER
-========================= */
+/* NUMBER */
 
 function n(id){
 
 return Number(
 document.getElementById(id).value
-) || 0;
+)||0;
 
 }
 
 
-/* =========================
-   MONEY
-========================= */
+/* MONEY */
 
 function money(x){
 
-return "OMR " +
+return "OMR "+
 Number(x).toFixed(3);
 
 }
 
 
-/* =========================
-   CALCULATE FORM
-========================= */
+/* CALCULATE */
 
 function calculate(){
 
-const wo = n("woodOpening");
-const wout = n("woodOut");
-const wr = n("woodReturn");
-const wp = n("woodPrice");
+const wo=n("woodOpening");
+const wout=n("woodOut");
+const wr=n("woodReturn");
+const wp=n("woodPrice");
 
-const po = n("plasticOpening");
-const pout = n("plasticOut");
-const pr = n("plasticReturn");
-const pp = n("plasticPrice");
+const po=n("plasticOpening");
+const pout=n("plasticOut");
+const pr=n("plasticReturn");
+const pp=n("plasticPrice");
 
-const ws =
-wo - wout + wr;
+const ws=wo-wout+wr;
+const ps=po-pout+pr;
 
-const ps =
-po - pout + pr;
+const wv=ws*wp;
+const pv=ps*pp;
 
-const wv =
-ws * wp;
-
-const pv =
-ps * pp;
-
-const ts =
-ws + ps;
-
-const tv =
-wv + pv;
+const ts=ws+ps;
+const tv=wv+pv;
 
 
 /* WOOD */
 
-document.getElementById(
-"woodResultOpening"
-).innerText = wo;
-
-document.getElementById(
-"woodResultOut"
-).innerText = wout;
-
-document.getElementById(
-"woodResultReturn"
-).innerText = wr;
-
-document.getElementById(
-"woodStock"
-).innerText = ws;
-
-document.getElementById(
-"woodResultPrice"
-).innerText =
-money(wp);
-
-document.getElementById(
-"woodValue"
-).innerText =
-money(wv);
+document.getElementById("woodResultOpening").innerText=wo;
+document.getElementById("woodResultOut").innerText=wout;
+document.getElementById("woodResultReturn").innerText=wr;
+document.getElementById("woodStock").innerText=ws;
+document.getElementById("woodResultPrice").innerText=money(wp);
+document.getElementById("woodValue").innerText=money(wv);
 
 
 /* PLASTIC */
 
-document.getElementById(
-"plasticResultOpening"
-).innerText = po;
-
-document.getElementById(
-"plasticResultOut"
-).innerText = pout;
-
-document.getElementById(
-"plasticResultReturn"
-).innerText = pr;
-
-document.getElementById(
-"plasticStock"
-).innerText = ps;
-
-document.getElementById(
-"plasticResultPrice"
-).innerText =
-money(pp);
-
-document.getElementById(
-"plasticValue"
-).innerText =
-money(pv);
+document.getElementById("plasticResultOpening").innerText=po;
+document.getElementById("plasticResultOut").innerText=pout;
+document.getElementById("plasticResultReturn").innerText=pr;
+document.getElementById("plasticStock").innerText=ps;
+document.getElementById("plasticResultPrice").innerText=money(pp);
+document.getElementById("plasticValue").innerText=money(pv);
 
 
 /* TOTAL */
 
-document.getElementById(
-"totalOpening"
-).innerText =
-wo + po;
-
-document.getElementById(
-"totalOut"
-).innerText =
-wout + pout;
-
-document.getElementById(
-"totalReturn"
-).innerText =
-wr + pr;
-
-document.getElementById(
-"tableTotalStock"
-).innerText =
-ts;
-
-document.getElementById(
-"tableTotalValue"
-).innerText =
-money(tv);
-
-document.getElementById(
-"totalStock"
-).innerText =
-ts;
-
-document.getElementById(
-"totalValue"
-).innerText =
-money(tv);
+document.getElementById("totalOpening").innerText=wo+po;
+document.getElementById("totalOut").innerText=wout+pout;
+document.getElementById("totalReturn").innerText=wr+pr;
+document.getElementById("tableTotalStock").innerText=ts;
+document.getElementById("tableTotalValue").innerText=money(tv);
+document.getElementById("totalStock").innerText=ts;
+document.getElementById("totalValue").innerText=money(tv);
 
 }
 
 
-/* =========================
-   FORM DATA
-========================= */
+/* FORM DATA */
 
 function getFormData(){
 
@@ -1670,12 +1562,7 @@ document.getElementById("branch").value.trim();
 const location =
 document.getElementById("location").value.trim();
 
-
-if(
-!date ||
-!branch ||
-!location
-){
+if(!date || !branch || !location){
 
 alert(
 "Please enter Date, Branch and Warehouse / Location."
@@ -1684,7 +1571,6 @@ alert(
 return null;
 
 }
-
 
 return {
 
@@ -1707,18 +1593,13 @@ pp:n("plasticPrice")
 }
 
 
-/* =========================
-   ADD / UPDATE
-========================= */
+/* ADD / UPDATE */
 
 async function addTransaction(){
 
-const data =
-getFormData();
+const data=getFormData();
 
-if(!data){
-return;
-}
+if(!data)return;
 
 if(!db){
 
@@ -1730,27 +1611,20 @@ return;
 
 }
 
-
 const woodStock =
-data.wo -
-data.wout +
-data.wr;
+data.wo-data.wout+data.wr;
 
 const plasticStock =
-data.po -
-data.pout +
-data.pr;
+data.po-data.pout+data.pr;
 
 const totalStock =
-woodStock +
-plasticStock;
+woodStock+plasticStock;
 
 const totalValue =
-(woodStock * data.wp) +
-(plasticStock * data.pp);
+(woodStock*data.wp)+
+(plasticStock*data.pp);
 
-
-const dbData = {
+const dbData={
 
 date:data.date,
 branch:data.branch,
@@ -1771,10 +1645,9 @@ total_value:totalValue
 
 };
 
-
 try{
 
-if(editIndex >= 0){
+if(editIndex>=0){
 
 const oldTransaction =
 transactions[editIndex];
@@ -1787,10 +1660,8 @@ await db
 
 if(result.error){
 
-console.error(result.error);
-
 alert(
-"Update failed:\n" +
+"Update failed:\n"+
 result.error.message
 );
 
@@ -1798,12 +1669,11 @@ return;
 
 }
 
-editIndex = -1;
+editIndex=-1;
 
 document.getElementById(
 "saveButton"
-).innerText =
-"+ ADD TRANSACTION";
+).innerText="+ ADD TRANSACTION";
 
 alert(
 "Transaction updated successfully!"
@@ -1819,10 +1689,8 @@ await db
 
 if(result.error){
 
-console.error(result.error);
-
 alert(
-"Save failed:\n" +
+"Save failed:\n"+
 result.error.message
 );
 
@@ -1846,8 +1714,8 @@ catch(error){
 console.error(error);
 
 alert(
-"Database error:\n" +
-(error.message || error)
+"Database error:\n"+
+(error.message||error)
 );
 
 }
@@ -1855,185 +1723,89 @@ alert(
 }
 
 
-/* =========================
-   RENDER
-========================= */
+/* RENDER */
 
 function renderTransactions(){
 
 const body =
-document.getElementById(
-"transactionList"
-);
+document.getElementById("transactionList");
 
-if(!body){
-return;
-}
+if(!body)return;
 
-body.innerHTML = "";
+body.innerHTML="";
 
+transactions.forEach(function(t,i){
 
-transactions.forEach(
-function(t,i){
+const r=body.insertRow();
 
-const r =
-body.insertRow();
+r.insertCell().innerText=t.date;
+r.insertCell().innerText=t.branch;
+r.insertCell().innerText=t.location;
 
-r.insertCell().innerText =
-t.date;
+r.insertCell().innerText=t.wo;
+r.insertCell().innerText=t.wout;
+r.insertCell().innerText=t.wr;
+r.insertCell().innerText=t.ws;
 
-r.insertCell().innerText =
-t.branch;
+r.insertCell().innerText=t.po;
+r.insertCell().innerText=t.pout;
+r.insertCell().innerText=t.pr;
+r.insertCell().innerText=t.ps;
 
-r.insertCell().innerText =
-t.location;
+r.insertCell().innerText=t.totalStock;
 
+const c=r.insertCell();
 
-/* WOOD */
-
-r.insertCell().innerText =
-t.wo;
-
-r.insertCell().innerText =
-t.wout;
-
-r.insertCell().innerText =
-t.wr;
-
-r.insertCell().innerText =
-t.ws;
-
-
-/* PLASTIC */
-
-r.insertCell().innerText =
-t.po;
-
-r.insertCell().innerText =
-t.pout;
-
-r.insertCell().innerText =
-t.pr;
-
-r.insertCell().innerText =
-t.ps;
-
-
-/* TOTAL */
-
-r.insertCell().innerText =
-t.totalStock;
-
-
-/* ACTION */
-
-const c =
-r.insertCell();
-
-c.innerHTML =
-'<button class="small secondary" onclick="editTransaction('+i+')">Edit</button> ' +
+c.innerHTML=
+'<button class="small secondary" onclick="editTransaction('+i+')">Edit</button> '+
 '<button class="small danger" onclick="deleteTransaction('+i+')">Delete</button>';
 
-}
-);
-
+});
 
 if(!transactions.length){
 
-const r =
-body.insertRow();
+const r=body.insertRow();
 
-const c =
-r.insertCell();
+const c=r.insertCell();
 
-c.colSpan = 13;
-
-c.className = "empty";
-
-c.innerText =
-"No transactions yet.";
+c.colSpan=13;
+c.className="empty";
+c.innerText="No transactions yet.";
 
 }
-
 
 document.getElementById(
 "transactionCount"
-).innerText =
-transactions.length;
+).innerText=transactions.length;
 
 }
 
 
-/* =========================
-   EDIT
-========================= */
+/* EDIT */
 
 function editTransaction(i){
 
-const t =
-transactions[i];
+const t=transactions[i];
 
-editIndex = i;
+editIndex=i;
 
-document.getElementById(
-"date"
-).value =
-t.date;
+document.getElementById("date").value=t.date;
+document.getElementById("branch").value=t.branch;
+document.getElementById("location").value=t.location;
 
-document.getElementById(
-"branch"
-).value =
-t.branch;
+document.getElementById("woodOpening").value=t.wo;
+document.getElementById("woodOut").value=t.wout;
+document.getElementById("woodReturn").value=t.wr;
+document.getElementById("woodPrice").value=t.wp;
 
-document.getElementById(
-"location"
-).value =
-t.location;
-
-document.getElementById(
-"woodOpening"
-).value =
-t.wo;
-
-document.getElementById(
-"woodOut"
-).value =
-t.wout;
-
-document.getElementById(
-"woodReturn"
-).value =
-t.wr;
-
-document.getElementById(
-"woodPrice"
-).value =
-t.wp;
-
-document.getElementById(
-"plasticOpening"
-).value =
-t.po;
-
-document.getElementById(
-"plasticOut"
-).value =
-t.pout;
-
-document.getElementById(
-"plasticReturn"
-).value =
-t.pr;
-
-document.getElementById(
-"plasticPrice"
-).value =
-t.pp;
+document.getElementById("plasticOpening").value=t.po;
+document.getElementById("plasticOut").value=t.pout;
+document.getElementById("plasticReturn").value=t.pr;
+document.getElementById("plasticPrice").value=t.pp;
 
 document.getElementById(
 "saveButton"
-).innerText =
-"UPDATE TRANSACTION";
+).innerText="UPDATE TRANSACTION";
 
 calculate();
 
@@ -2045,20 +1817,15 @@ behavior:"smooth"
 }
 
 
-/* =========================
-   DELETE
-========================= */
+/* DELETE */
 
 async function deleteTransaction(i){
 
-if(
-!confirm("Delete this transaction?")
-){
+if(!confirm("Delete this transaction?")){
 return;
 }
 
-const t =
-transactions[i];
+const t=transactions[i];
 
 if(!db){
 
@@ -2080,10 +1847,8 @@ await db
 
 if(result.error){
 
-console.error(result.error);
-
 alert(
-"Delete failed:\n" +
+"Delete failed:\n"+
 result.error.message
 );
 
@@ -2096,11 +1861,9 @@ await loadTransactions();
 }
 catch(error){
 
-console.error(error);
-
 alert(
-"Delete error:\n" +
-(error.message || error)
+"Delete error:\n"+
+(error.message||error)
 );
 
 }
@@ -2108,9 +1871,7 @@ alert(
 }
 
 
-/* =========================
-   CLEAR ALL
-========================= */
+/* CLEAR ALL */
 
 async function clearAllTransactions(){
 
@@ -2118,12 +1879,9 @@ if(!transactions.length){
 return;
 }
 
-
-if(
-!confirm(
+if(!confirm(
 "Delete ALL transactions? This cannot be undone."
-)
-){
+)){
 return;
 }
 
@@ -2147,10 +1905,8 @@ await db
 
 if(result.error){
 
-console.error(result.error);
-
 alert(
-"Clear All failed:\n" +
+"Clear All failed:\n"+
 result.error.message
 );
 
@@ -2163,11 +1919,9 @@ await loadTransactions();
 }
 catch(error){
 
-console.error(error);
-
 alert(
-"Clear All error:\n" +
-(error.message || error)
+"Clear All error:\n"+
+(error.message||error)
 );
 
 }
@@ -2175,42 +1929,23 @@ alert(
 }
 
 
-/* =========================
-   CLEAR FORM
-========================= */
+/* CLEAR FORM */
 
 function clearForm(){
 
-editIndex = -1;
+editIndex=-1;
 
-const now =
-new Date();
+const now=new Date();
 
 const localDate =
-now.getFullYear() +
-"-" +
-String(
-now.getMonth()+1
-).padStart(2,"0") +
-"-" +
-String(
-now.getDate()
-).padStart(2,"0");
+now.getFullYear()+"-"+
+String(now.getMonth()+1).padStart(2,"0")+"-"+
+String(now.getDate()).padStart(2,"0");
 
+document.getElementById("date").value=localDate;
 
-document.getElementById(
-"date"
-).value =
-localDate;
-
-document.getElementById(
-"branch"
-).value = "";
-
-document.getElementById(
-"location"
-).value = "";
-
+document.getElementById("branch").value="";
+document.getElementById("location").value="";
 
 [
 "woodOpening",
@@ -2221,30 +1956,22 @@ document.getElementById(
 "plasticOut",
 "plasticReturn",
 "plasticPrice"
-].forEach(
-function(id){
+].forEach(function(id){
 
-document.getElementById(
-id
-).value = 0;
+document.getElementById(id).value=0;
 
-}
-);
-
+});
 
 document.getElementById(
 "saveButton"
-).innerText =
-"+ ADD TRANSACTION";
+).innerText="+ ADD TRANSACTION";
 
 calculate();
 
 }
 
 
-/* =========================
-   EXPORT CSV
-========================= */
+/* CSV */
 
 function exportCSV(){
 
@@ -2258,8 +1985,7 @@ return;
 
 }
 
-
-const headers = [
+const headers=[
 
 "Date",
 "Branch",
@@ -2282,10 +2008,7 @@ const headers = [
 
 ];
 
-
-const rows =
-transactions.map(
-function(t){
+const rows=transactions.map(function(t){
 
 return [
 
@@ -2306,51 +2029,35 @@ t.ps,
 t.pp,
 
 t.totalStock,
-Number(t.totalValue || 0).toFixed(3)
+Number(t.totalValue||0).toFixed(3)
 
 ];
 
-}
-);
+});
 
+const csv=[headers,...rows]
+.map(function(row){
 
-const csv =
-[headers,...rows]
-.map(
-function(row){
+return row.map(function(v){
 
-return row.map(
-function(v){
-
-return '"' +
-String(v)
-.replaceAll('"','""') +
+return '"'+
+String(v).replaceAll('"','""')+
 '"';
 
-}
-).join(",");
+}).join(",");
 
-}
-).join("\n");
+}).join("\n");
 
-
-const blob =
-new Blob(
+const blob=new Blob(
 [csv],
-{
-type:"text/csv;charset=utf-8;"
-}
+{type:"text/csv;charset=utf-8;"}
 );
 
+const a=document.createElement("a");
 
-const a =
-document.createElement("a");
+a.href=URL.createObjectURL(blob);
 
-a.href =
-URL.createObjectURL(blob);
-
-a.download =
-"pallet_ledger.csv";
+a.download="pallet_tracker.csv";
 
 a.click();
 
@@ -2359,9 +2066,7 @@ URL.revokeObjectURL(a.href);
 }
 
 
-/* =========================
-   START
-========================= */
+/* START */
 
 window.addEventListener(
 "DOMContentLoaded",
