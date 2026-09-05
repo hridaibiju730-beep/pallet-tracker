@@ -5,850 +5,466 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pallet Tracker</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{box-sizing:border-box}
-
-:root{
---primary:#1d4ed8;
---primary2:#4f46e5;
---green:#15803d;
---orange:#c2410c;
---red:#dc2626;
---dark:#0f172a;
---text:#334155;
---muted:#64748b;
---line:#e2e8f0;
---bg:#f1f5f9;
---white:#fff;
-}
-
-body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:#f1f5f9;
-color:var(--dark);
-min-height:100vh;
-}
-
-/* LOGIN */
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#111827}
+button,input,select,textarea{font-family:inherit}
 
 .login-screen{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
-background:
-radial-gradient(circle at top left,#dbeafe 0,#f8fafc 38%),
-linear-gradient(135deg,#f8fafc,#eef2ff);
+min-height:100vh;display:flex;align-items:center;justify-content:center;
+padding:15px;background:linear-gradient(135deg,#eaf3ff,#f8fafc,#eef2f7)
 }
-
 .login-box{
-width:100%;
-max-width:410px;
-background:#fff;
-border:1px solid #e2e8f0;
-border-radius:22px;
-padding:35px;
-box-shadow:0 25px 60px rgba(15,23,42,.12);
+width:100%;max-width:360px;background:#fff;border:1px solid #dce5ef;
+border-radius:14px;padding:22px 24px 19px;box-shadow:0 14px 35px rgba(15,23,42,.10)
 }
-
-.login-logo{
-text-align:center;
-font-size:27px;
-font-weight:900;
-letter-spacing:.5px;
-margin-bottom:8px;
+.login-title{text-align:center;font-size:24px;font-weight:900;letter-spacing:-1px;white-space:nowrap;margin-bottom:13px}
+.box-icon{font-size:23px}.blue-text{color:#2454d8}.dark-text{color:#111827}
+.login-heading{text-align:center;font-size:19px;font-weight:800;margin-bottom:5px}
+.login-subtitle{text-align:center;color:#64748b;font-size:11px;line-height:1.4;margin-bottom:18px}
+.login-form label{display:block;color:#475569;font-size:11px;font-weight:700;margin-bottom:5px}
+.login-form input{
+width:100%;height:40px;border:1px solid #cbd7e6;border-radius:7px;
+background:#f8fafc;padding:0 11px;font-size:12px;outline:none;margin-bottom:12px
 }
-
-.login-logo span{color:var(--primary)}
-
-.login-title{
-text-align:center;
-font-size:22px;
-margin:0;
-font-weight:800;
-}
-
-.login-sub{
-text-align:center;
-font-size:12px;
-color:var(--muted);
-margin:7px 0 25px;
-}
-
-.login-field{margin-bottom:16px}
-
-.login-field label{
-display:block;
-font-size:12px;
-font-weight:700;
-margin-bottom:7px;
-color:#475569;
-}
-
-.login-field input{
-width:100%;
-height:46px;
-padding:10px 13px;
-border:1px solid #cbd5e1;
-border-radius:10px;
-font-size:14px;
-outline:none;
-background:#f8fafc;
-}
-
-.login-field input:focus{
-border-color:var(--primary);
-box-shadow:0 0 0 3px #2563eb20;
-background:#fff;
-}
-
+.login-form input:focus{border-color:#3158db;background:#fff}
 .login-button{
-width:100%;
-height:46px;
-border:0;
-border-radius:10px;
-background:linear-gradient(135deg,var(--primary),var(--primary2));
-color:#fff;
-font-size:14px;
-font-weight:800;
-cursor:pointer;
-margin-top:4px;
+width:100%;height:41px;border:0;border-radius:7px;
+background:linear-gradient(90deg,#2454d8,#5146e5);color:#fff;
+font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 6px 15px rgba(49,76,220,.2)
 }
-
-.login-button:hover{opacity:.94}
-
-.login-error{
-display:none;
-background:#fee2e2;
-color:#b91c1c;
-border:1px solid #fecaca;
-border-radius:9px;
-padding:10px;
-font-size:12px;
-text-align:center;
-margin-bottom:15px;
-}
-
-.login-footer{
-text-align:center;
-font-size:11px;
-color:#94a3b8;
-margin-top:22px;
-}
-
+.login-error{color:#dc2626;text-align:center;min-height:15px;margin-top:8px;font-size:10px}
+.login-footer{text-align:center;color:#94a3b8;font-size:9px;margin-top:15px}
 #app{display:none}
 
-/* MAIN */
-
-.container{
-max-width:1450px;
-margin:auto;
-padding:20px;
+.header-area{background:#fff}
+.asset-title{
+text-align:center;height:42px;display:flex;align-items:center;justify-content:center;
+font-size:19px;font-weight:900;letter-spacing:1px;color:#111827
 }
-
 .topbar{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:15px;
-margin-bottom:18px;
-flex-wrap:wrap;
+background:linear-gradient(90deg,#071a3d,#0b2f6f,#123d8f);color:#fff;min-height:58px;
+padding:7px 22px;display:flex;align-items:center;border-top:2px solid #2454d8
 }
-
-.brand{
-font-size:22px;
-font-weight:900;
-letter-spacing:.3px;
+.header-logo{display:flex;align-items:center;gap:8px;min-width:150px;flex:0 0 auto}
+.header-logo-icon{
+width:28px;height:28px;border-radius:7px;background:#fff;color:#2454d8;
+display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 2px 7px rgba(0,0,0,.15)
 }
-
-.brand span{color:var(--primary)}
-
-.top-actions{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.live-panel{
-display:flex;
-align-items:center;
-gap:16px;
-font-size:12px;
-color:var(--muted);
-}
-
+.header-logo-text{font-size:12px;font-weight:900;letter-spacing:.5px}
+.topbar-center{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:0 0 auto}
+.live-time{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:11px;font-weight:400}
 .live-dot{
-display:inline-block;
-width:7px;
-height:7px;
-background:#22c55e;
-border-radius:50%;
-margin:0 4px;
-box-shadow:0 0 0 3px #22c55e20;
+width:7px;height:7px;background:#22c55e;border-radius:50%;display:inline-block;
+box-shadow:0 0 7px rgba(34,197,94,.9);animation:liveBlink 1s infinite
 }
-
-#liveTime{
-font-weight:800;
-color:#334155;
+@keyframes liveBlink{0%,100%{opacity:1}50%{opacity:.25}}
+.clock{font-size:11px;color:#fff;font-weight:400;font-variant-numeric:tabular-nums;white-space:nowrap}
+.header-date{display:flex;align-items:center;gap:5px}
+.header-date-icon{font-size:13px}
+.header-date input{
+width:112px;height:29px;border:1px solid rgba(255,255,255,.45);border-radius:5px;
+background:rgba(255,255,255,.08);color:#fff;padding:3px 6px;font-size:10px;outline:none
 }
-
-.logout-btn{
-background:#fff;
-border:1px solid #fecaca;
-color:#b91c1c;
-border-radius:9px;
-padding:8px 13px;
-font-size:12px;
-font-weight:700;
-cursor:pointer;
+.header-date input::-webkit-calendar-picker-indicator{filter:invert(1)}
+.header-actions{display:flex;align-items:center;justify-content:flex-end;margin-left:8px}
+.logout{
+border:0;background:transparent;color:#fff;padding:3px 2px;font-weight:400;
+cursor:pointer;font-size:10px;display:flex;align-items:center;gap:3px
 }
+.logout:hover{color:#bfdbfe}.logout-icon{font-size:13px}
 
-/* HEADER */
-
-.header{
-background:linear-gradient(135deg,#0f172a,#1e3a8a);
-color:#fff;
-border-radius:18px;
-padding:27px 30px;
-margin-bottom:20px;
-box-shadow:0 12px 30px rgba(15,23,42,.14);
+.nav{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 20px;display:flex;gap:22px}
+.nav button{
+border:0;background:transparent;color:#475569;padding:11px 2px 9px;border-radius:0;
+font-weight:700;cursor:pointer;font-size:13px;position:relative
 }
-
-.header h1{
-margin:0 0 7px;
-font-size:29px;
-letter-spacing:.3px;
+.nav button:hover,.nav button.active{background:transparent;color:#2454d8}
+.nav button.active::after{
+content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#2454d8;border-radius:2px
 }
-
-.header p{
-margin:0;
-color:#dbeafe;
-font-size:13px;
+.container{width:100%;max-width:none;margin:0;padding:22px}
+.section-title{font-size:25px;font-weight:900;color:#111827;margin-bottom:5px}
+.subtitle{color:#64748b;margin-bottom:18px;font-size:13px}
+.stock-layout{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%;margin-bottom:18px}
+.stock-card{
+background:#fff;border:1px solid #dbe4ef;border-radius:14px;padding:18px 20px;min-height:108px;
+box-shadow:0 7px 20px rgba(15,23,42,.06);display:flex;flex-direction:column;
+justify-content:center;position:relative;overflow:hidden
 }
-
-/* CARDS */
-
-.cards{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:16px;
-margin-bottom:20px;
-}
-
-.card{
-background:#fff;
-border:1px solid var(--line);
-border-radius:16px;
-padding:20px;
-box-shadow:0 5px 18px rgba(15,23,42,.05);
-position:relative;
-overflow:hidden;
-}
-
-.card:after{
-content:"";
-position:absolute;
-right:-25px;
-top:-25px;
-width:80px;
-height:80px;
-border-radius:50%;
-background:#eff6ff;
-}
-
-.card:nth-child(2):after{background:#f0fdf4}
-.card:nth-child(3):after{background:#fff7ed}
-
-.card:nth-child(1){border-top:4px solid var(--primary)}
-.card:nth-child(2){border-top:4px solid var(--green)}
-.card:nth-child(3){border-top:4px solid var(--orange)}
-
-.card .label{
-font-size:11px;
-font-weight:800;
-color:var(--muted);
-letter-spacing:.5px;
-}
-
-.card .number{
-font-size:29px;
-font-weight:900;
-margin-top:9px;
-position:relative;
-z-index:2;
-}
-
-.card .sub{
-font-size:11px;
-color:#94a3b8;
-margin-top:5px;
-}
-
-/* SECTION */
-
+.stock-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#2454d8}
+.stock-card-label{color:#64748b;font-size:12px;font-weight:700}
+.stock-card-value{color:#111827;font-size:32px;font-weight:900;margin-top:7px;line-height:1}
+.stock-card-total{background:#f8fbff}
+.stock-card-total::before{background:#16a34a}
+.stock-card-total .stock-card-value{color:#2454d8}
 .section{
-background:#fff;
-border:1px solid var(--line);
-border-radius:16px;
-padding:22px;
-margin-bottom:20px;
-box-shadow:0 5px 18px rgba(15,23,42,.045);
+background:#fff;border:1px solid #e2e8f0;border-radius:13px;padding:19px;
+margin-bottom:18px;box-shadow:0 7px 20px rgba(15,23,42,.05);width:100%
 }
-
-.section h2{
-font-size:18px;
-margin:0 0 18px;
-font-weight:800;
+.section h3{margin-top:0;color:#111827;font-size:17px;margin-bottom:14px}
+.form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.form-group label{display:block;font-size:12px;font-weight:800;color:#475569;margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{
+width:100%;height:40px;padding:8px 10px;border:1px solid #cbd5e1;border-radius:7px;
+background:#fff;font-size:13px;outline:none
 }
-
-.row{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:17px;
-margin-bottom:18px;
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+border-color:#2454d8;box-shadow:0 0 0 3px rgba(36,84,216,.08)
 }
+.form-group input[readonly]{background:#f1f5f9;color:#475569;font-weight:700}
+.pallet-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:17px}
+.pallet-box{border:1px solid #dbe4ef;border-radius:11px;padding:15px;background:#fbfdff}
+.pallet-box h4{margin:0 0 14px;font-size:16px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
+.btn{border:0;padding:9px 15px;border-radius:7px;font-weight:800;cursor:pointer;font-size:13px}
+.btn-primary{background:#2454d8;color:#fff}.btn-primary:hover{background:#1d46b8}
+.btn-secondary{background:#e2e8f0;color:#334155}.btn-success{background:#16a34a;color:#fff}.btn-danger{background:#dc2626;color:#fff}
+.table-wrap{overflow-x:auto;width:100%}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th{background:#f1f5f9;color:#334155;font-weight:800}
+th,td{padding:10px 9px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:12px}
+tr:hover td{background:#fafcff}
+.action-btn{border:0;padding:6px 9px;border-radius:6px;cursor:pointer;font-weight:700;margin-right:3px;font-size:11px}
+.edit-btn{background:#e2e8f0;color:#334155}.delete-btn{background:#fee2e2;color:#b91c1c}
+.preview{margin-top:18px}.hidden{display:none}
 
-.field label{
-display:block;
-font-size:12px;
-font-weight:700;
-color:#475569;
-margin-bottom:7px;
+.attendance-header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:16px;flex-wrap:wrap}
+.attendance-month-box{display:flex;align-items:center;gap:8px}
+.attendance-month-box label{font-size:11px;font-weight:800;color:#475569}
+.month-selector{height:34px;padding:5px 8px;border:1px solid #cbd5e1;border-radius:6px;font-size:11px}
+.worker-name-section{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:13px;margin-bottom:14px}
+.worker-name-title{font-size:13px;font-weight:900;color:#334155;margin-bottom:10px}
+.worker-name-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.worker-card{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:10px;position:relative}
+.worker-card-title{font-size:10px;font-weight:900;color:#2454d8;margin-bottom:8px}
+.worker-card label{display:block;font-size:9px;font-weight:700;color:#64748b;margin-bottom:4px}
+.worker-code,.worker-name-input,.employee-code-input{
+width:100%;height:32px;border:1px solid #cbd5e1;border-radius:6px;padding:5px 7px;
+font-size:10px;outline:none;background:#fff;margin-bottom:7px
 }
-
-input{
-width:100%;
-height:44px;
-padding:9px 12px;
-border:1px solid #cbd5e1;
-border-radius:9px;
-font-size:14px;
-background:#f8fafc;
-outline:none;
+.worker-code:focus,.worker-name-input:focus,.employee-code-input:focus{
+border-color:#2454d8;box-shadow:0 0 0 2px rgba(36,84,216,.08)
 }
-
-input:focus{
-border-color:var(--primary);
-box-shadow:0 0 0 3px #2563eb20;
-background:#fff;
+.remove-worker-btn{
+width:100%;height:27px;border:0;border-radius:5px;background:#fee2e2;color:#b91c1c;
+font-size:9px;font-weight:800;cursor:pointer;margin-top:2px
 }
-
-/* PALLET BOX */
-
-.pallet-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:18px;
+.remove-worker-btn:hover{background:#fecaca}
+.worker-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.attendance-month-label{font-size:13px;font-weight:900;color:#2454d8;margin-bottom:9px}
+.attendance-period-display{color:#64748b;font-size:11px;font-weight:700;margin-top:6px}
+.attendance-matrix-wrap{overflow-x:auto;width:100%;border:1px solid #dbe4ef;border-radius:9px}
+.attendance-matrix{width:max-content;min-width:100%;border-collapse:collapse}
+.attendance-matrix th,.attendance-matrix td{
+border:1px solid #e2e8f0;text-align:center;padding:0;font-size:10px;min-width:30px;height:34px
 }
-
-.pallet-box{
-border:1px solid #bfdbfe;
-border-radius:14px;
-padding:18px;
-background:linear-gradient(145deg,#f8fbff,#eff6ff);
+.attendance-matrix .worker-header{
+position:sticky;left:0;z-index:4;min-width:175px;width:175px;background:#eaf1ff;
+text-align:left;padding:7px 8px
 }
-
-.pallet-box:nth-child(2){
-border-color:#bbf7d0;
-background:linear-gradient(145deg,#fbfffc,#f0fdf4);
+.attendance-matrix .date-header{background:#f1f5f9;font-weight:800;min-width:30px;height:32px}
+.attendance-matrix .month-header{background:#0b2f6f;color:#fff;height:32px;font-size:12px;font-weight:800}
+.attendance-matrix .month-header-cell{
+position:sticky;left:0;z-index:5;background:#0b2f6f;color:#fff;min-width:175px
 }
-
-.pallet-box h3{
-margin:0 0 16px;
-font-size:16px;
+.attendance-matrix .worker-name-cell{
+position:sticky;left:0;z-index:3;background:#fff;text-align:left;padding:6px 8px;
+font-weight:800;color:#334155;min-width:175px
 }
+.worker-matrix-code{color:#2454d8;font-size:9px;font-weight:900}
+.worker-matrix-name{color:#334155;font-size:10px;font-weight:800;margin-top:2px}
+.attendance-cell{cursor:pointer;font-weight:900;user-select:none}
+.attendance-cell:hover{background:#eef4ff}
+.status-present{color:#15803d;background:#bbf7d0}
+.status-absent{color:#dc2626;background:#fecaca}
+.status-leave{color:#b45309;background:#fde68a}
+.status-empty{color:#94a3b8;background:#fff}
+.friday-header{background:#172033!important;color:#fff!important;font-weight:900!important}
+.friday-cell{background:#273449;color:#94a3b8}
+.friday-cell.status-present{background:#bbf7d0!important;color:#15803d!important}
+.friday-cell.status-absent{background:#fecaca!important;color:#dc2626!important}
+.friday-cell.status-leave{background:#fde68a!important;color:#b45309!important}
+.friday-cell.status-empty{background:#273449!important;color:#94a3b8!important}
+.attendance-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:10px;color:#475569}
+.legend-item{display:flex;align-items:center;gap:5px}
+.legend-box{width:13px;height:13px;border-radius:3px;border:1px solid #dbe4ef}
+.legend-present{background:#bbf7d0}.legend-absent{background:#fecaca}.legend-leave{background:#fde68a}
+.legend-friday{background:#273449;border-color:#172033}
+.attendance-note{color:#64748b;font-size:10px;margin-top:9px}
 
-.pallet-box:first-child h3{color:#2563eb}
-.pallet-box:nth-child(2) h3{color:#15803d}
-
-/* BUTTONS */
-
-.button-row{
-display:flex;
-gap:10px;
-justify-content:flex-end;
-margin-top:20px;
-flex-wrap:wrap;
+@media(max-width:1100px){.worker-name-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){
+.form-grid{grid-template-columns:repeat(2,1fr)}
+.stock-layout{grid-template-columns:repeat(3,1fr)}
+.worker-name-grid{grid-template-columns:repeat(2,1fr)}
 }
-
-button{
-border:0;
-border-radius:9px;
-padding:11px 18px;
-font-weight:800;
-cursor:pointer;
-font-size:12px;
+@media(max-width:700px){
+.asset-title{height:34px;font-size:15px;letter-spacing:.7px}
+.topbar{min-height:52px;padding:6px 8px}
+.header-logo{min-width:auto;gap:5px}
+.header-logo-icon{width:23px;height:23px;border-radius:5px;font-size:13px}
+.header-logo-text{font-size:9px}
+.topbar-center{margin-left:auto;gap:5px}
+.live-time{gap:3px;font-size:8px}.live-dot{width:6px;height:6px}.clock{font-size:8px}
+.header-date{gap:2px}.header-date-icon{font-size:10px}
+.header-date input{width:82px;height:25px;font-size:8px;padding:2px 4px}
+.header-actions{margin-left:5px}.logout{padding:2px 1px;font-size:8px;gap:2px}.logout-icon{font-size:10px}
+.nav{padding:0 10px;gap:16px}.nav button{padding:10px 1px 8px;font-size:11px}
+.container{padding:13px 8px}.section-title{font-size:20px}.subtitle{font-size:11px;margin-bottom:13px}
+.stock-layout{grid-template-columns:repeat(3,1fr);gap:7px}
+.stock-card{min-height:82px;padding:11px 8px;border-radius:9px}
+.stock-card::before{width:3px}.stock-card-label{font-size:8px}.stock-card-value{font-size:22px;margin-top:6px}
+.section{padding:13px;border-radius:10px}.section h3{font-size:14px}
+.form-grid{grid-template-columns:1fr 1fr;gap:9px}
+.form-group label{font-size:10px}
+.form-group input,.form-group select,.form-group textarea{height:36px;padding:6px 7px;font-size:11px}
+.form-group input[type="date"],.form-group input[type="month"]{height:32px;padding:5px 6px;font-size:9px}
+.pallet-grid{grid-template-columns:1fr;gap:10px}.pallet-box{padding:11px}
+.btn{padding:8px 10px;font-size:11px}
+.worker-name-grid{grid-template-columns:1fr 1fr}.worker-card{padding:8px}
+.attendance-matrix .worker-header,.attendance-matrix .worker-name-cell,.attendance-matrix .month-header-cell{min-width:145px;width:145px}
+.attendance-matrix th,.attendance-matrix td{min-width:28px;height:32px;font-size:9px}
+.worker-matrix-name{font-size:9px}.worker-matrix-code{font-size:8px}
+.login-box{max-width:340px;padding:21px 20px 18px;border-radius:13px}
+.login-title{font-size:23px}.login-heading{font-size:18px}
 }
-
-.primary{
-background:linear-gradient(135deg,var(--primary),var(--primary2));
-color:#fff;
-}
-
-.secondary{
-background:#eef2f7;
-color:#334155;
-}
-
-.danger{
-background:#fee2e2;
-color:#b91c1c;
-}
-
-.small{
-padding:7px 10px;
-font-size:11px;
-}
-
-.note{
-font-size:11px;
-color:#64748b;
-margin-top:10px;
-}
-
-/* TABLE */
-
-.table-wrap{
-overflow-x:auto;
-border:1px solid #e2e8f0;
-border-radius:10px;
-}
-
-table{
-width:100%;
-border-collapse:separate;
-border-spacing:0;
-min-width:900px;
-}
-
-th,td{
-padding:11px 10px;
-border-bottom:1px solid #e5e7eb;
-text-align:left;
-font-size:12px;
-white-space:nowrap;
-}
-
-th{
-background:#f8fafc;
-font-size:11px;
-font-weight:800;
-color:#475569;
-position:sticky;
-top:0;
-}
-
-tbody tr:hover{
-background:#f8fbff;
-}
-
-tbody tr:last-child td{
-border-bottom:0;
-}
-
-.total-row td{
-font-weight:800;
-background:#f8fafc;
-}
-
-.empty{
-text-align:center;
-color:#64748b;
-padding:28px;
-}
-
-footer{
-text-align:center;
-color:#94a3b8;
-font-size:11px;
-padding:4px 0 20px;
-}
-
-/* MOBILE */
-
-@media(max-width:1000px){
-
-.cards{
-grid-template-columns:repeat(2,1fr);
-}
-
-}
-
-@media(max-width:800px){
-
-.container{
-padding:12px;
-}
-
-.cards,
-.row,
-.pallet-grid{
-grid-template-columns:1fr;
-}
-
-.header{
-padding:22px;
-}
-
-.header h1{
-font-size:23px;
-}
-
-.topbar{
-align-items:flex-start;
-}
-
-.top-actions{
-width:100%;
-justify-content:space-between;
-}
-
-.live-panel{
-gap:10px;
-}
-
-.section{
-padding:16px;
-}
-
-}
-
-@media(max-width:520px){
-
-.cards{
-grid-template-columns:1fr;
-}
-
-.login-box{
-padding:27px 21px;
-}
-
-.brand{
-font-size:19px;
-}
-
-.header p{
-line-height:1.5;
-}
-
+@media(max-width:420px){
+.asset-title{height:31px;font-size:13px}.topbar{padding:5px 6px}
+.header-logo-icon{width:20px;height:20px;font-size:11px}.header-logo-text{font-size:7px}
+.topbar-center{gap:4px}.live-time{font-size:7px}.clock{font-size:7px}
+.header-date input{width:70px;height:23px;font-size:7px}.header-date-icon{font-size:9px}
+.logout{font-size:7px}.logout-icon{font-size:9px}
+.nav{gap:13px}.nav button{padding:8px 1px 7px;font-size:10px}
+.stock-layout{gap:5px}.stock-card{min-height:72px;padding:9px 6px}
+.stock-card-label{font-size:7px}.stock-card-value{font-size:18px;margin-top:5px}
+.worker-name-grid{grid-template-columns:1fr 1fr;gap:6px}.worker-card{padding:7px}
+.worker-card-title{font-size:8px}
+.worker-code,.worker-name-input,.employee-code-input{height:30px;font-size:9px}
+.attendance-matrix .worker-header,.attendance-matrix .worker-name-cell,.attendance-matrix .month-header-cell{min-width:135px;width:135px}
+.attendance-matrix th,.attendance-matrix td{min-width:27px;height:31px;font-size:8px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-
-<div class="login-screen" id="loginScreen">
-
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen" class="login-screen">
 <div class="login-box">
 
-<div class="login-logo">
-📦 <span>PALLET</span> TRACKER
+<div class="login-title">
+<span class="box-icon"></span>
+<span class="blue-text"> BRANCH </span>
+<span class="dark-text"> CONTROLLER </span>
 </div>
 
-<h2 class="login-title">Admin login</h2>
+<div class="login-heading">admin login</div>
+<div class="login-subtitle">Sign in to system</div>
 
-<div class="login-sub">
-Warehouse Asset Control System
+<div class="login-form">
+<label>admin name</label>
+<input type="text" id="username" placeholder=" enter name" autocomplete="username">
+
+<label>admin password</label>
+<input type="password" id="password" placeholder="Enter password" autocomplete="current-password">
+
+<!-- LOGIN ONLY FIX -->
+<button type="button" class="login-button" onclick="login()">Login</button>
+
+<div id="loginError" class="login-error"></div>
 </div>
 
-<div class="login-error" id="loginError">
-Invalid username or password.
-</div>
-
-<div class="login-field">
-<label>Username</label>
-<input
-type="text"
-id="loginUsername"
-placeholder="Enter username"
-autocomplete="username">
-</div>
-
-<div class="login-field">
-<label>Password</label>
-<input
-type="password"
-id="loginPassword"
-placeholder="Enter password"
-autocomplete="current-password">
-</div>
-
-<button
-class="login-button"
-id="loginButton"
-onclick="login()">
-🔐 LOGIN
-</button>
-
-<div class="login-footer">
-© 2026 Pallet Tracker System
-</div>
+<div class="login-footer">Warehouse Control System</div>
 
 </div>
 </div>
 
-
-<!-- APPLICATION -->
-
+<!-- ================= APP ================= -->
 <div id="app">
 
-<div class="container">
-
-<!-- TOP BAR -->
+<div class="header-area">
+<div class="asset-title">BRANCH MANAGING SYSTEM</div>
 
 <div class="topbar">
 
-<div class="brand">
-📦 <span>PALLET</span> TRACKER
+<div class="header-logo">
+<div class="header-logo-icon">📦</div>
+<div class="header-logo-text">MR LOGISTICS</div>
 </div>
 
-<div class="top-actions">
-
-<div class="live-panel">
-
-<div>
-🟢 <b>LIVE</b>
+<div class="topbar-center">
+<div class="live-time">
 <span class="live-dot"></span>
-<span id="liveTime">--:--:--</span>
+<span>LIVE</span>
+<span id="clock">Loading...</span>
 </div>
 
-<div>
-📅 <span id="liveDate">--/--/----</span>
+<div class="header-date">
+<span class="header-date-icon">📅</span>
+<input type="date" id="headerDate">
+</div>
+</div>
+
+<div class="header-actions">
+<button class="logout" onclick="logout()">
+<span class="logout-icon">↪</span>
+<span>Logout</span>
+</button>
 </div>
 
 </div>
+</div>
 
-<button
-class="logout-btn"
-onclick="logout()">
-↪ Logout
+<!-- ================= NAV ================= -->
+<div class="nav">
+<button id="palletNav" class="active" onclick="showPage('palletPage')">
+📦 Pallet Tracker
 </button>
 
-</div>
-</div>
-
-
-<!-- HEADER -->
-
-<div class="header">
-
-<h1>PALLET TRACKER</h1>
-
-<p>
-Warehouse Asset Control • Pallet Section • MR Logistics • AL Kamil
-</p>
-
+<button id="attendanceNav" onclick="showPage('attendancePage')">
+👷 Labour Attendance
+</button>
 </div>
 
+<!-- ================= PALLET PAGE ================= -->
+<div id="palletPage" class="container">
 
-<!-- SUMMARY -->
+<div class="section-title">PALLET TRACKER</div>
+<div class="subtitle">MR Logistics • AL Kamil • Pallet Section</div>
 
-<div class="cards">
+<div class="stock-layout">
 
-<div class="card">
-
-<div class="label">
-CURRENT PALLET STOCK
+<div class="stock-card">
+<div class="stock-card-label">WOODEN PALLET STOCK</div>
+<div id="woodStock" class="stock-card-value">117</div>
 </div>
 
-<div class="number" id="totalStock">
-0
+<div class="stock-card">
+<div class="stock-card-label">PLASTIC PALLET STOCK</div>
+<div id="plasticStock" class="stock-card-value">87</div>
 </div>
 
-<div class="sub">
-Pallets Available
+<div class="stock-card stock-card-total">
+<div class="stock-card-label">TOTAL PALLET STOCK</div>
+<div id="totalStock" class="stock-card-value">204</div>
 </div>
 
 </div>
-
-
-<div class="card">
-
-<div class="label">
-TOTAL PALLET VALUE
-</div>
-
-<div class="number" id="totalValue">
-OMR 0.000
-</div>
-
-<div class="sub">
-Current Stock Value
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="label">
-TOTAL TRANSACTIONS
-</div>
-
-<div class="number" id="transactionCount">
-0
-</div>
-
-<div class="sub">
-Saved Transactions
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ENTRY -->
 
 <div class="section">
 
-<h2>📝 Transaction Entry</h2>
+<h3>Daily Pallet Transaction</h3>
 
-<div class="row">
+<div class="form-grid">
 
-<div class="field">
-
+<div class="form-group">
 <label>Date</label>
-
-<input
-type="date"
-id="date">
-
+<input type="date" id="transactionDate">
 </div>
 
-<div class="field">
-
+<div class="form-group">
 <label>Branch</label>
-
-<input
-type="text"
-id="branch"
-placeholder="Enter branch">
-
+<input type="text" id="branch" value="MCKML" placeholder="Branch">
 </div>
 
-<div class="field">
-
+<div class="form-group">
 <label>Warehouse / Location</label>
+<input type="text" id="location" value="Warehouse" placeholder="Warehouse / Location">
+</div>
 
-<input
-type="text"
-id="location"
-placeholder="Enter warehouse location">
-
+<div class="form-group">
+<label>Vehicle number</label>
+<input type="text" id="reference" placeholder="eg... 0000 AA">
 </div>
 
 </div>
-
 
 <div class="pallet-grid">
 
-<!-- WOOD -->
+<div class="pallet-box">
+
+<h4>🪵 Wooden Pallet</h4>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Opening</label>
+<input type="number" id="woodOpening" value="117" min="0" readonly>
+</div>
+
+<div class="form-group">
+<label>Outgoing</label>
+<input type="number" id="woodOut" value="0" min="0" oninput="updatePreview()">
+</div>
+
+<div class="form-group">
+<label>Returning</label>
+<input type="number" id="woodReturn" value="0" min="0" oninput="updatePreview()">
+</div>
+
+<div class="form-group">
+<label>Closing</label>
+<input type="number" id="woodClosing" value="117" readonly>
+</div>
+
+</div>
+
+<div class="form-grid" style="margin-top:10px">
+
+<div class="form-group">
+<label>Unit Price OMR</label>
+<input type="number" id="woodPrice" value="1.2" min="0" step="0.01" oninput="updatePreview()">
+</div>
+
+<div class="form-group">
+<label>Total Value OMR</label>
+<input type="number" id="woodValue" value="0" readonly>
+</div>
+
+</div>
+</div>
 
 <div class="pallet-box">
 
-<h3>🟦 Wooden Pallet</h3>
+<h4>🧱 Plastic Pallet</h4>
 
-<div class="row"
-style="grid-template-columns:1fr 1fr">
+<div class="form-grid">
 
-<div class="field">
+<div class="form-group">
 <label>Opening</label>
-<input
-type="number"
-id="woodOpening"
-min="0"
-value="0"
-oninput="calculate()">
+<input type="number" id="plasticOpening" value="87" min="0" readonly>
 </div>
 
-<div class="field">
-<label>Out</label>
-<input
-type="number"
-id="woodOut"
-min="0"
-value="0"
-oninput="calculate()">
+<div class="form-group">
+<label>Outgoing</label>
+<input type="number" id="plasticOut" value="0" min="0" oninput="updatePreview()">
 </div>
 
-<div class="field">
-<label>Return</label>
-<input
-type="number"
-id="woodReturn"
-min="0"
-value="0"
-oninput="calculate()">
+<div class="form-group">
+<label>Returning</label>
+<input type="number" id="plasticReturn" value="0" min="0" oninput="updatePreview()">
 </div>
 
-<div class="field">
-<label>Unit Price (OMR)</label>
-<input
-type="number"
-id="woodPrice"
-min="0"
-step="0.001"
-value="0"
-oninput="calculate()">
+<div class="form-group">
+<label>Closing</label>
+<input type="number" id="plasticClosing" value="87" readonly>
 </div>
 
 </div>
+
+<div class="form-grid" style="margin-top:10px">
+
+<div class="form-group">
+<label>Unit Price OMR</label>
+<input type="number" id="plasticPrice" value="10" min="0" step="0.01" oninput="updatePreview()">
 </div>
 
-
-<!-- PLASTIC -->
-
-<div class="pallet-box">
-
-<h3>🟩 Plastic Pallet</h3>
-
-<div class="row"
-style="grid-template-columns:1fr 1fr">
-
-<div class="field">
-<label>Opening</label>
-<input
-type="number"
-id="plasticOpening"
-min="0"
-value="0"
-oninput="calculate()">
-</div>
-
-<div class="field">
-<label>Out</label>
-<input
-type="number"
-id="plasticOut"
-min="0"
-value="0"
-oninput="calculate()">
-</div>
-
-<div class="field">
-<label>Return</label>
-<input
-type="number"
-id="plasticReturn"
-min="0"
-value="0"
-oninput="calculate()">
-</div>
-
-<div class="field">
-<label>Unit Price (OMR)</label>
-<input
-type="number"
-id="plasticPrice"
-min="0"
-step="0.001"
-value="0"
-oninput="calculate()">
+<div class="form-group">
+<label>Total Value OMR</label>
+<input type="number" id="plasticValue" value="0" readonly>
 </div>
 
 </div>
@@ -856,958 +472,1783 @@ oninput="calculate()">
 
 </div>
 
-
-<div class="button-row">
-
-<button
-class="secondary"
-onclick="clearForm()">
-Clear
-</button>
-
-<button
-class="primary"
-id="saveButton"
-onclick="addTransaction()">
-+ ADD TRANSACTION
-</button>
-
+<div class="btn-row">
+<button class="btn btn-primary" onclick="saveTransaction()">Save Transaction</button>
+<button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+<button class="btn btn-success" onclick="exportCSV()">Export CSV</button>
 </div>
 
-<div class="note">
-Current Stock = Opening − Out + Return
-</div>
+<div class="section preview">
 
-</div>
-
-
-<!-- BALANCE -->
-
-<div class="section">
-
-<h2>📊 Current Pallet Balance</h2>
+<h3>Transaction Preview</h3>
 
 <div class="table-wrap">
 
 <table>
-
 <thead>
-
 <tr>
-<th>Pallet Type</th>
-<th>Opening</th>
-<th>Out</th>
-<th>Return</th>
-<th>Current Stock</th>
-<th>Unit Price</th>
-<th>Total Value</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td><b>🟦 Wooden</b></td>
-
-<td id="woodResultOpening">0</td>
-<td id="woodResultOut">0</td>
-<td id="woodResultReturn">0</td>
-<td id="woodStock">0</td>
-<td id="woodResultPrice">OMR 0.000</td>
-<td id="woodValue">OMR 0.000</td>
-
-</tr>
-
-<tr>
-
-<td><b>🟩 Plastic</b></td>
-
-<td id="plasticResultOpening">0</td>
-<td id="plasticResultOut">0</td>
-<td id="plasticResultReturn">0</td>
-<td id="plasticStock">0</td>
-<td id="plasticResultPrice">OMR 0.000</td>
-<td id="plasticValue">OMR 0.000</td>
-
-</tr>
-
-<tr class="total-row">
-
-<td>TOTAL</td>
-
-<td id="totalOpening">0</td>
-<td id="totalOut">0</td>
-<td id="totalReturn">0</td>
-<td id="tableTotalStock">0</td>
-
-<td>—</td>
-
-<td id="tableTotalValue">
-OMR 0.000
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-<!-- TRANSACTIONS -->
-
-<div class="section">
-
-<h2>📋 Transaction List</h2>
-
-<div
-class="button-row"
-style="margin-top:0;margin-bottom:15px">
-
-<button
-class="secondary"
-onclick="exportCSV()">
-⬇ Export CSV
-</button>
-
-<button
-class="danger"
-onclick="clearAllTransactions()">
-🗑 Clear All Transactions
-</button>
-
-</div>
-
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-
-<tr>
-
 <th>Date</th>
-<th>Branch</th>
-<th>Location</th>
-
 <th>Wood Opening</th>
 <th>Wood Out</th>
 <th>Wood Return</th>
-<th>Wood Stock</th>
-
+<th>Wood Closing</th>
 <th>Plastic Opening</th>
 <th>Plastic Out</th>
 <th>Plastic Return</th>
-<th>Plastic Stock</th>
-
-<th>Total Stock</th>
-
-<th>Action</th>
-
+<th>Plastic Closing</th>
 </tr>
-
 </thead>
 
-<tbody id="transactionList"></tbody>
+<tbody>
+<tr>
+<td id="pvDate">-</td>
+<td id="pvWoodOpening">0</td>
+<td id="pvWoodOut">0</td>
+<td id="pvWoodReturn">0</td>
+<td id="pvWoodClosing">0</td>
+<td id="pvPlasticOpening">0</td>
+<td id="pvPlasticOut">0</td>
+<td id="pvPlasticReturn">0</td>
+<td id="pvPlasticClosing">0</td>
+</tr>
+</tbody>
+
+</table>
+</div>
+</div>
+</div>
+
+<div class="section">
+
+<h3>Transaction History</h3>
+
+<div class="table-wrap">
+
+<table id="historyTable">
+
+<thead>
+<tr>
+<th>Date</th>
+<th>Branch</th>
+<th>Location</th>
+<th>Vehicle</th>
+<th>Wood Opening</th>
+<th>Wood Out</th>
+<th>Wood Return</th>
+<th>Wood Closing</th>
+<th>Plastic Opening</th>
+<th>Plastic Out</th>
+<th>Plastic Return</th>
+<th>Plastic Closing</th>
+<th>Total Value OMR</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="historyBody"></tbody>
 
 </table>
 
 </div>
+</div>
 
 </div>
 
+<!-- ================= ATTENDANCE PAGE ================= -->
+<div id="attendancePage" class="container hidden">
 
-<footer>
-© 2026 Pallet Tracker System • Warehouse Asset Control • All Rights Reserved
-</footer>
+<div class="section-title">LABOUR ATTENDANCE</div>
+<div class="subtitle">Labour Attendance Register • 21st → 20th</div>
+
+<div class="section">
+
+<div class="attendance-header">
+
+<div>
+
+<div class="attendance-month-label">Attendance Period</div>
+
+<div class="attendance-month-box">
+<label for="attendanceMonth">Period</label>
+<input type="month" id="attendanceMonth" class="month-selector">
+</div>
+
+<div id="attendancePeriodDisplay" class="attendance-period-display"></div>
 
 </div>
 </div>
 
+<div class="worker-name-section">
 
-<!-- SUPABASE -->
+<div class="worker-name-title">Labour / Employee Details</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div id="workerNameGrid" class="worker-name-grid"></div>
+
+<div class="worker-actions">
+
+<button class="btn btn-primary" onclick="addWorker()">+ Add Worker</button>
+<button class="btn btn-success" onclick="saveWorkerDetails()">Save Labour Details</button>
+<button class="btn btn-secondary" onclick="saveAttendanceManual()">Save Attendance</button>
+<button class="btn btn-success" onclick="exportAttendanceCSV()">Export Attendance CSV</button>
+
+</div>
+</div>
+
+<div class="attendance-matrix-wrap">
+
+<table class="attendance-matrix" id="attendanceMatrix">
+<thead id="attendanceMatrixHead"></thead>
+<tbody id="attendanceMatrixBody"></tbody>
+</table>
+
+</div>
+
+<div class="attendance-legend">
+
+<div class="legend-item">
+<span class="legend-box legend-present"></span> Present
+</div>
+
+<div class="legend-item">
+<span class="legend-box legend-absent"></span> Absent
+</div>
+
+<div class="legend-item">
+<span class="legend-box legend-leave"></span> Leave
+</div>
+
+<div class="legend-item">
+<span class="legend-box legend-friday"></span> Friday
+</div>
+
+</div>
+
+<div class="attendance-note">
+Click a date cell to cycle: Present → Absent → Leave → Blank. Every change is saved automatically.
+</div>
+
+</div>
+</div>
+
+</div>
 
 <script>
 
-const SUPABASE_URL =
-"https://hneqrtspwfacnqcszwpb.supabase.co";
+/* =========================================================
+SUPABASE
+========================================================= */
 
-const SUPABASE_KEY =
-"sb_publishable_uGjahiiOhSMmTSwjG2O0jw_QSjyq-zL";
+const SUPABASE_URL="https://hneqrtspwfacnqcszwpb.supabase.co";
+const SUPABASE_KEY="sb_publishable_uGjahiiOhSMmTSwjG2O0jw_QSjyq-zL";
 
-let db = null;
-
-if(
-window.supabase &&
-typeof window.supabase.createClient === "function"
-){
-
-db = window.supabase.createClient(
+const supabaseClient=window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
 
-}
+/* =========================================================
+SETTINGS
+========================================================= */
 
+const ADMIN_USERNAME="hridai";
+const ADMIN_PASSWORD="2001";
 
-/* LOGIN */
+const INITIAL_WOOD=117;
+const INITIAL_PLASTIC=87;
 
-const LOGIN_USERNAME = "hridai";
-const LOGIN_PASSWORD = "2328";
+let editingId=null;
 
-async function login(){
+/* =========================================================
+LOGIN — FIXED ONLY
+========================================================= */
 
-const username =
-document.getElementById("loginUsername").value.trim();
+function login(){
 
-const password =
-document.getElementById("loginPassword").value;
+const username=document.getElementById("username").value.trim();
+const password=document.getElementById("password").value;
+const error=document.getElementById("loginError");
 
-const loginError =
-document.getElementById("loginError");
+if(username===ADMIN_USERNAME && password===ADMIN_PASSWORD){
 
-if(
-username !== LOGIN_USERNAME ||
-password !== LOGIN_PASSWORD
-){
+localStorage.setItem("palletLoggedIn","true");
 
-loginError.innerText =
-"Invalid username or password.";
+document.getElementById("loginScreen").style.display="none";
+document.getElementById("app").style.display="block";
 
-loginError.style.display =
-"block";
+error.textContent="";
 
-return;
+prepareAlertAudio();
+startApp();
 
-}
+}else{
 
-loginError.style.display =
-"none";
-
-sessionStorage.setItem(
-"palletTrackerLoggedIn",
-"true"
-);
-
-showApp();
-
-clearForm();
-
-await loadTransactions();
+error.textContent="Invalid username or password.";
 
 }
 
-
-/* SHOW APP */
-
-function showApp(){
-
-document.getElementById(
-"loginScreen"
-).style.display = "none";
-
-document.getElementById(
-"app"
-).style.display = "block";
-
-updateLiveClock();
-
 }
-
-
-/* SHOW LOGIN */
-
-function showLogin(){
-
-document.getElementById(
-"app"
-).style.display = "none";
-
-document.getElementById(
-"loginScreen"
-).style.display = "flex";
-
-}
-
-
-/* LOGOUT */
 
 function logout(){
 
-if(
-!confirm("Are you sure you want to logout?")
-){
-return;
-}
+localStorage.removeItem("palletLoggedIn");
 
-sessionStorage.removeItem(
-"palletTrackerLoggedIn"
-);
+document.getElementById("app").style.display="none";
+document.getElementById("loginScreen").style.display="flex";
 
-editIndex = -1;
-
-document.getElementById(
-"loginUsername"
-).value = "";
-
-document.getElementById(
-"loginPassword"
-).value = "";
-
-showLogin();
+document.getElementById("username").value="";
+document.getElementById("password").value="";
+document.getElementById("loginError").textContent="";
 
 }
 
+/* ENTER KEY LOGIN */
 
-/* ENTER KEY */
+document.addEventListener("keydown",function(e){
 
-document.getElementById(
-"loginPassword"
-).addEventListener(
-"keydown",
-function(e){
+if(e.key==="Enter"){
 
-if(e.key === "Enter"){
+const loginScreen=document.getElementById("loginScreen");
+
+if(loginScreen && loginScreen.style.display!=="none"){
 login();
 }
 
-});
-
-
-/* CHECK LOGIN */
-
-async function checkLogin(){
-
-const loggedIn =
-sessionStorage.getItem(
-"palletTrackerLoggedIn"
-) === "true";
-
-if(loggedIn){
-
-showApp();
-
-clearForm();
-
-await loadTransactions();
-
-}
-else{
-
-showLogin();
-
-}
-
-}
-
-
-/* DATA */
-
-let transactions = [];
-let editIndex = -1;
-
-
-/* LOAD DATABASE */
-
-async function loadTransactions(){
-
-if(!db){
-
-alert(
-"Supabase connection could not start."
-);
-
-return;
-
-}
-
-try{
-
-const result =
-await db
-.from("pallet_transactions")
-.select("*")
-.order("date",{ascending:false})
-.order("id",{ascending:false});
-
-const data = result.data;
-const error = result.error;
-
-if(error){
-
-console.error(error);
-
-alert(
-"Database error:\n" +
-(error.message || "Unknown error")
-);
-
-return;
-
-}
-
-transactions =
-(data || []).map(function(t){
-
-const wo =
-Number(t.wo) || 0;
-
-const wout =
-Number(t.wout) || 0;
-
-const wr =
-Number(t.wr) || 0;
-
-const po =
-Number(t.po) || 0;
-
-const pout =
-Number(t.pout) || 0;
-
-const pr =
-Number(t.pr) || 0;
-
-return {
-
-id:t.id,
-
-date:t.date,
-branch:t.branch,
-location:t.location,
-
-wo:wo,
-wout:wout,
-wr:wr,
-wp:Number(t.wp) || 0,
-
-ws:wo-wout+wr,
-
-po:po,
-pout:pout,
-pr:pr,
-pp:Number(t.pp) || 0,
-
-ps:po-pout+pr,
-
-totalStock:
-Number(t.total_stock) || 0,
-
-totalValue:
-Number(t.total_value) || 0
-
-};
-
-});
-
-renderTransactions();
-
-calculateTotalsFromDatabase();
-
-}
-catch(error){
-
-console.error(error);
-
-alert(
-"Database connection error:\n" +
-(error.message || error)
-);
-
-}
-
-}
-
-
-/* DATABASE TOTALS */
-
-function calculateTotalsFromDatabase(){
-
-let woodOpening=0;
-let woodOut=0;
-let woodReturn=0;
-
-let plasticOpening=0;
-let plasticOut=0;
-let plasticReturn=0;
-
-let woodPrice=0;
-let plasticPrice=0;
-
-transactions.forEach(function(t){
-
-woodOpening += Number(t.wo)||0;
-woodOut += Number(t.wout)||0;
-woodReturn += Number(t.wr)||0;
-
-plasticOpening += Number(t.po)||0;
-plasticOut += Number(t.pout)||0;
-plasticReturn += Number(t.pr)||0;
-
-if(
-woodPrice===0 &&
-Number(t.wp)>0
-){
-woodPrice=Number(t.wp);
-}
-
-if(
-plasticPrice===0 &&
-Number(t.pp)>0
-){
-plasticPrice=Number(t.pp);
 }
 
 });
 
-const woodStock =
-woodOpening-woodOut+woodReturn;
+/* =========================================================
+PAGE NAVIGATION
+========================================================= */
 
-const plasticStock =
-plasticOpening-plasticOut+plasticReturn;
+function showPage(page){
 
-const woodValue =
-woodStock*woodPrice;
+document.getElementById("palletPage").classList.add("hidden");
+document.getElementById("attendancePage").classList.add("hidden");
 
-const plasticValue =
-plasticStock*plasticPrice;
+document.getElementById("palletNav").classList.remove("active");
+document.getElementById("attendanceNav").classList.remove("active");
 
-const totalStock =
-woodStock+plasticStock;
+if(page==="palletPage"){
 
-const totalValue =
-woodValue+plasticValue;
-
-
-/* WOOD */
-
-document.getElementById("woodResultOpening").innerText=woodOpening;
-document.getElementById("woodResultOut").innerText=woodOut;
-document.getElementById("woodResultReturn").innerText=woodReturn;
-document.getElementById("woodStock").innerText=woodStock;
-document.getElementById("woodResultPrice").innerText=money(woodPrice);
-document.getElementById("woodValue").innerText=money(woodValue);
-
-
-/* PLASTIC */
-
-document.getElementById("plasticResultOpening").innerText=plasticOpening;
-document.getElementById("plasticResultOut").innerText=plasticOut;
-document.getElementById("plasticResultReturn").innerText=plasticReturn;
-document.getElementById("plasticStock").innerText=plasticStock;
-document.getElementById("plasticResultPrice").innerText=money(plasticPrice);
-document.getElementById("plasticValue").innerText=money(plasticValue);
-
-
-/* TOTAL */
-
-document.getElementById("totalOpening").innerText =
-woodOpening+plasticOpening;
-
-document.getElementById("totalOut").innerText =
-woodOut+plasticOut;
-
-document.getElementById("totalReturn").innerText =
-woodReturn+plasticReturn;
-
-document.getElementById("tableTotalStock").innerText =
-totalStock;
-
-document.getElementById("tableTotalValue").innerText =
-money(totalValue);
-
-document.getElementById("totalStock").innerText =
-totalStock;
-
-document.getElementById("totalValue").innerText =
-money(totalValue);
+document.getElementById("palletPage").classList.remove("hidden");
+document.getElementById("palletNav").classList.add("active");
 
 }
 
+if(page==="attendancePage"){
 
-/* CLOCK */
+document.getElementById("attendancePage").classList.remove("hidden");
+document.getElementById("attendanceNav").classList.add("active");
 
-function updateLiveClock(){
+renderAttendance();
+
+}
+
+}
+
+/* =========================================================
+DATE / CLOCK
+========================================================= */
+
+function getToday(){
+
+const d=new Date();
+
+const y=d.getFullYear();
+const m=String(d.getMonth()+1).padStart(2,"0");
+const day=String(d.getDate()).padStart(2,"0");
+
+return `${y}-${m}-${day}`;
+
+}
+
+function updateClock(){
 
 const now=new Date();
 
-const time =
-now.toLocaleTimeString([],{
+const time=now.toLocaleTimeString([],{
 hour:"2-digit",
 minute:"2-digit",
 second:"2-digit"
 });
 
-const date =
-now.toLocaleDateString("en-GB",{
-day:"2-digit",
-month:"2-digit",
-year:"numeric"
-});
-
-const timeElement =
-document.getElementById("liveTime");
-
-const dateElement =
-document.getElementById("liveDate");
-
-if(timeElement){
-timeElement.innerText=time;
-}
-
-if(dateElement){
-dateElement.innerText=date;
-}
+document.getElementById("clock").textContent=time;
 
 }
 
-setInterval(updateLiveClock,1000);
+setInterval(updateClock,1000);
 
+/* =========================================================
+9 PM SINGLE DAILY TONE
+========================================================= */
 
-/* NUMBER */
+let alertAudioContext=null;
 
-function n(id){
-
-return Number(
-document.getElementById(id).value
-)||0;
-
-}
-
-
-/* MONEY */
-
-function money(x){
-
-return "OMR "+
-Number(x).toFixed(3);
-
-}
-
-
-/* CALCULATE */
-
-function calculate(){
-
-const wo=n("woodOpening");
-const wout=n("woodOut");
-const wr=n("woodReturn");
-const wp=n("woodPrice");
-
-const po=n("plasticOpening");
-const pout=n("plasticOut");
-const pr=n("plasticReturn");
-const pp=n("plasticPrice");
-
-const ws=wo-wout+wr;
-const ps=po-pout+pr;
-
-const wv=ws*wp;
-const pv=ps*pp;
-
-const ts=ws+ps;
-const tv=wv+pv;
-
-
-/* WOOD */
-
-document.getElementById("woodResultOpening").innerText=wo;
-document.getElementById("woodResultOut").innerText=wout;
-document.getElementById("woodResultReturn").innerText=wr;
-document.getElementById("woodStock").innerText=ws;
-document.getElementById("woodResultPrice").innerText=money(wp);
-document.getElementById("woodValue").innerText=money(wv);
-
-
-/* PLASTIC */
-
-document.getElementById("plasticResultOpening").innerText=po;
-document.getElementById("plasticResultOut").innerText=pout;
-document.getElementById("plasticResultReturn").innerText=pr;
-document.getElementById("plasticStock").innerText=ps;
-document.getElementById("plasticResultPrice").innerText=money(pp);
-document.getElementById("plasticValue").innerText=money(pv);
-
-
-/* TOTAL */
-
-document.getElementById("totalOpening").innerText=wo+po;
-document.getElementById("totalOut").innerText=wout+pout;
-document.getElementById("totalReturn").innerText=wr+pr;
-document.getElementById("tableTotalStock").innerText=ts;
-document.getElementById("tableTotalValue").innerText=money(tv);
-document.getElementById("totalStock").innerText=ts;
-document.getElementById("totalValue").innerText=money(tv);
-
-}
-
-
-/* FORM DATA */
-
-function getFormData(){
-
-const date =
-document.getElementById("date").value;
-
-const branch =
-document.getElementById("branch").value.trim();
-
-const location =
-document.getElementById("location").value.trim();
-
-if(!date || !branch || !location){
-
-alert(
-"Please enter Date, Branch and Warehouse / Location."
-);
-
-return null;
-
-}
-
-return {
-
-date,
-branch,
-location,
-
-wo:n("woodOpening"),
-wout:n("woodOut"),
-wr:n("woodReturn"),
-wp:n("woodPrice"),
-
-po:n("plasticOpening"),
-pout:n("plasticOut"),
-pr:n("plasticReturn"),
-pp:n("plasticPrice")
-
-};
-
-}
-
-
-/* ADD / UPDATE */
-
-async function addTransaction(){
-
-const data=getFormData();
-
-if(!data)return;
-
-if(!db){
-
-alert(
-"Database connection is not available."
-);
-
-return;
-
-}
-
-const woodStock =
-data.wo-data.wout+data.wr;
-
-const plasticStock =
-data.po-data.pout+data.pr;
-
-const totalStock =
-woodStock+plasticStock;
-
-const totalValue =
-(woodStock*data.wp)+
-(plasticStock*data.pp);
-
-const dbData={
-
-date:data.date,
-branch:data.branch,
-location:data.location,
-
-wo:data.wo,
-wout:data.wout,
-wr:data.wr,
-wp:data.wp,
-
-po:data.po,
-pout:data.pout,
-pr:data.pr,
-pp:data.pp,
-
-total_stock:totalStock,
-total_value:totalValue
-
-};
+function prepareAlertAudio(){
 
 try{
 
-if(editIndex>=0){
+if(!alertAudioContext){
 
-const oldTransaction =
-transactions[editIndex];
+alertAudioContext=new(
+window.AudioContext||
+window.webkitAudioContext
+)();
 
-const result =
-await db
-.from("pallet_transactions")
-.update(dbData)
-.eq("id",oldTransaction.id);
+}
 
-if(result.error){
+if(alertAudioContext.state==="suspended"){
+alertAudioContext.resume();
+}
 
-alert(
-"Update failed:\n"+
-result.error.message
+}catch(e){
+
+console.error("Audio preparation error:",e);
+
+}
+
+}
+
+function playNinePMTone(){
+
+try{
+
+if(!alertAudioContext){
+
+alertAudioContext=new(
+window.AudioContext||
+window.webkitAudioContext
+)();
+
+}
+
+if(alertAudioContext.state==="suspended"){
+alertAudioContext.resume();
+}
+
+const oscillator=alertAudioContext.createOscillator();
+const gain=alertAudioContext.createGain();
+
+oscillator.type="sine";
+
+oscillator.frequency.setValueAtTime(
+880,
+alertAudioContext.currentTime
 );
 
+gain.gain.setValueAtTime(
+0.0001,
+alertAudioContext.currentTime
+);
+
+gain.gain.exponentialRampToValueAtTime(
+0.25,
+alertAudioContext.currentTime+0.02
+);
+
+gain.gain.exponentialRampToValueAtTime(
+0.0001,
+alertAudioContext.currentTime+0.55
+);
+
+oscillator.connect(gain);
+gain.connect(alertAudioContext.destination);
+
+oscillator.start();
+
+oscillator.stop(
+alertAudioContext.currentTime+0.55
+);
+
+}catch(e){
+
+console.error("9 PM tone error:",e);
+
+}
+
+}
+
+/* =========================================================
+HOURLY SINGLE TONE
+========================================================= */
+
+function playHourlyTone(){
+
+try{
+
+if(!alertAudioContext){
+
+alertAudioContext=new(
+window.AudioContext||
+window.webkitAudioContext
+)();
+
+}
+
+if(alertAudioContext.state==="suspended"){
+alertAudioContext.resume();
+}
+
+const oscillator=alertAudioContext.createOscillator();
+const gain=alertAudioContext.createGain();
+
+oscillator.type="sine";
+
+oscillator.frequency.setValueAtTime(
+880,
+alertAudioContext.currentTime
+);
+
+gain.gain.setValueAtTime(
+0.0001,
+alertAudioContext.currentTime
+);
+
+gain.gain.exponentialRampToValueAtTime(
+0.25,
+alertAudioContext.currentTime+0.02
+);
+
+gain.gain.exponentialRampToValueAtTime(
+0.0001,
+alertAudioContext.currentTime+0.55
+);
+
+oscillator.connect(gain);
+gain.connect(alertAudioContext.destination);
+
+oscillator.start();
+
+oscillator.stop(
+alertAudioContext.currentTime+0.55
+);
+
+}catch(e){
+
+console.error("Hourly tone error:",e);
+
+}
+
+}
+
+function checkHourlyAlert(){
+
+const now=new Date();
+
+const hour=now.getHours();
+const minute=now.getMinutes();
+
+if(minute!==0){
 return;
-
 }
 
-editIndex=-1;
+const hourlyKey=
+`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}-${hour}`;
 
-document.getElementById(
-"saveButton"
-).innerText="+ ADD TRANSACTION";
+const lastAlert=
+localStorage.getItem("palletHourlyAlertKey");
 
-alert(
-"Transaction updated successfully!"
-);
-
-}
-else{
-
-const result =
-await db
-.from("pallet_transactions")
-.insert([dbData]);
-
-if(result.error){
-
-alert(
-"Save failed:\n"+
-result.error.message
-);
-
+if(lastAlert===hourlyKey){
 return;
-
 }
 
-alert(
-"Transaction saved successfully!"
+localStorage.setItem(
+"palletHourlyAlertKey",
+hourlyKey
 );
 
-}
-
-await loadTransactions();
-
-clearForm();
+playHourlyTone();
 
 }
-catch(error){
 
-console.error(error);
+setInterval(checkHourlyAlert,1000);
 
-alert(
-"Database error:\n"+
-(error.message||error)
+/* =========================================================
+ATTENDANCE DATA
+========================================================= */
+
+const DEFAULT_WORKERS=[
+
+{employeeCode:"1954",name:"MUHAMMAD AYUB DAD"},
+{employeeCode:"1992",name:"MUHAMMED SHAFIQ AHMED"},
+{employeeCode:"EMP003",code:"",name:"HAIDER ALI"},
+{employeeCode:"EMP004",code:"2634",name:"YASIR HUSSAIN"},
+{employeeCode:"EMP005",code:"3124",name:"MIRZA ANEES REHMAN"}
+
+];
+
+let workers=JSON.parse(
+localStorage.getItem("palletWorkerDetails")||"null"
+)||DEFAULT_WORKERS;
+
+let attendanceData=JSON.parse(
+localStorage.getItem("palletAttendanceData")||"{}"
 );
 
+/* =========================================================
+ATTENDANCE PERIOD 21st → 20th
+========================================================= */
+
+function getAttendancePeriodMonth(dateStr=getToday()){
+
+const d=new Date(dateStr+"T00:00:00");
+
+let year=d.getFullYear();
+let month=d.getMonth()+1;
+
+if(d.getDate()<=20){
+
+month--;
+
+if(month<1){
+month=12;
+year--;
 }
 
 }
 
+return `${year}-${String(month).padStart(2,"0")}`;
 
-/* RENDER */
+}
 
-function renderTransactions(){
+function getAttendancePeriodDates(periodMonth){
 
-const body =
-document.getElementById("transactionList");
+const [year,month]=periodMonth.split("-").map(Number);
 
-if(!body)return;
+const start=new Date(year,month-1,21);
+const end=new Date(year,month,20);
 
-body.innerHTML="";
+const dates=[];
 
-transactions.forEach(function(t,i){
+for(
+let d=new Date(start);
+d<=end;
+d.setDate(d.getDate()+1)
+){
 
-const r=body.insertRow();
+const y=d.getFullYear();
+const m=String(d.getMonth()+1).padStart(2,"0");
+const day=String(d.getDate()).padStart(2,"0");
 
-r.insertCell().innerText=t.date;
-r.insertCell().innerText=t.branch;
-r.insertCell().innerText=t.location;
+dates.push(`${y}-${m}-${day}`);
 
-r.insertCell().innerText=t.wo;
-r.insertCell().innerText=t.wout;
-r.insertCell().innerText=t.wr;
-r.insertCell().innerText=t.ws;
+}
 
-r.insertCell().innerText=t.po;
-r.insertCell().innerText=t.pout;
-r.insertCell().innerText=t.pr;
-r.insertCell().innerText=t.ps;
+return dates;
 
-r.insertCell().innerText=t.totalStock;
+}
 
-const c=r.insertCell();
+/* =========================================================
+ATTENDANCE PERIOD DISPLAY
+========================================================= */
 
-c.innerHTML=
-'<button class="small secondary" onclick="editTransaction('+i+')">Edit</button> '+
-'<button class="small danger" onclick="deleteTransaction('+i+')">Delete</button>';
+function formatAttendancePeriod(periodMonth){
+
+const [year,month]=periodMonth.split("-").map(Number);
+
+const start=new Date(year,month-1,21);
+const end=new Date(year,month,20);
+
+const options={
+day:"numeric",
+month:"long",
+year:"numeric"
+};
+
+return `${start.toLocaleDateString("en-GB",options)} → ${end.toLocaleDateString("en-GB",options)}`;
+
+}
+
+/* =========================================================
+RENDER WORKER DETAILS
+========================================================= */
+
+function renderWorkerDetails(){
+
+const grid=document.getElementById("workerNameGrid");
+
+if(!grid)return;
+
+grid.innerHTML="";
+
+workers.forEach((worker,index)=>{
+
+const card=document.createElement("div");
+
+card.className="worker-card";
+
+card.innerHTML=`
+
+<div class="worker-card-title">
+Worker ${index+1}
+</div>
+
+<label>Employee Code</label>
+
+<input
+class="employee-code-input"
+data-index="${index}"
+data-field="employeeCode"
+value="${worker.employeeCode||""}"
+placeholder="Employee Code"
+>
+
+<label>Labour Code</label>
+
+<input
+class="worker-code"
+data-index="${index}"
+data-field="code"
+value="${worker.code||""}"
+placeholder="Labour Code"
+>
+
+<label>Labour Name</label>
+
+<input
+class="worker-name-input"
+data-index="${index}"
+data-field="name"
+value="${worker.name||""}"
+placeholder="Labour Name"
+>
+
+<button
+class="remove-worker-btn"
+onclick="removeWorker(${index})"
+>
+Remove Worker
+</button>
+
+`;
+
+grid.appendChild(card);
 
 });
 
-if(!transactions.length){
+grid
+.querySelectorAll("input")
+.forEach(input=>{
 
-const r=body.insertRow();
+input.addEventListener("input",function(){
 
-const c=r.insertCell();
+const index=Number(this.dataset.index);
+const field=this.dataset.field;
 
-c.colSpan=13;
-c.className="empty";
-c.innerText="No transactions yet.";
+workers[index][field]=this.value;
+
+localStorage.setItem(
+"palletWorkerDetails",
+JSON.stringify(workers)
+);
+
+});
+
+});
+
+}
+
+/* =========================================================
+ADD WORKER
+========================================================= */
+
+function addWorker(){
+
+workers.push({
+employeeCode:`EMP${String(workers.length+1).padStart(3,"0")}`,
+code:"",
+name:""
+});
+
+localStorage.setItem(
+"palletWorkerDetails",
+JSON.stringify(workers)
+);
+
+renderWorkerDetails();
+renderAttendance();
+
+}
+
+/* =========================================================
+REMOVE WORKER
+========================================================= */
+
+function removeWorker(index){
+
+if(!confirm("Remove this worker?")){
+return;
+}
+
+workers.splice(index,1);
+
+localStorage.setItem(
+"palletWorkerDetails",
+JSON.stringify(workers)
+);
+
+renderWorkerDetails();
+renderAttendance();
+
+}
+
+/* =========================================================
+SAVE LABOUR DETAILS
+========================================================= */
+
+function saveWorkerDetails(){
+
+const inputs=document.querySelectorAll(
+"#workerNameGrid input"
+);
+
+inputs.forEach(input=>{
+
+const index=Number(input.dataset.index);
+const field=input.dataset.field;
+
+workers[index][field]=input.value.trim();
+
+});
+
+localStorage.setItem(
+"palletWorkerDetails",
+JSON.stringify(workers)
+);
+
+alert("Labour details saved successfully.");
+
+renderAttendance();
+
+}
+
+/* =========================================================
+ATTENDANCE CELL KEY
+========================================================= */
+
+function attendanceKey(worker,date){
+
+return `${worker.code||worker.name}_${date}`;
+
+}
+
+/* =========================================================
+FIND ATTENDANCE RECORD
+========================================================= */
+
+function findAttendanceRecord(worker,date){
+
+const key=attendanceKey(worker,date);
+
+if(
+Object.prototype.hasOwnProperty.call(
+attendanceData,
+key
+)
+){
+
+return attendanceData[key];
+
+}
+
+return "";
+
+}
+
+/* =========================================================
+SAVE ATTENDANCE
+========================================================= */
+
+function saveAttendanceValue(worker,date,value){
+
+const key=attendanceKey(worker,date);
+
+if(value){
+
+attendanceData[key]=value;
+
+}else{
+
+delete attendanceData[key];
+
+}
+
+localStorage.setItem(
+"palletAttendanceData",
+JSON.stringify(attendanceData)
+);
+
+}
+
+/* =========================================================
+ATTENDANCE CELL CLICK
+========================================================= */
+
+function cycleAttendance(workerIndex,date){
+
+const worker=workers[workerIndex];
+
+if(!worker||!worker.code){
+return;
+}
+
+const current=findAttendanceRecord(worker,date);
+
+let next="";
+
+if(current===""){
+next="P";
+}else if(current==="P"){
+next="A";
+}else if(current==="A"){
+next="L";
+}else{
+next="";
+}
+
+saveAttendanceValue(
+worker,
+date,
+next
+);
+
+renderAttendance();
+
+}
+
+/* =========================================================
+RENDER ATTENDANCE
+========================================================= */
+
+function renderAttendance(){
+
+const monthInput=document.getElementById("attendanceMonth");
+const head=document.getElementById("attendanceMatrixHead");
+const body=document.getElementById("attendanceMatrixBody");
+const periodDisplay=document.getElementById("attendancePeriodDisplay");
+
+if(!monthInput||!head||!body){
+return;
+}
+
+if(!monthInput.value){
+monthInput.value=getAttendancePeriodMonth();
+}
+
+const periodMonth=monthInput.value;
+
+const dates=getAttendancePeriodDates(periodMonth);
+
+if(periodDisplay){
+periodDisplay.textContent=
+formatAttendancePeriod(periodMonth);
+}
+
+renderWorkerDetails();
+
+head.innerHTML="";
+
+const monthRow=document.createElement("tr");
+
+const monthCell=document.createElement("th");
+
+monthCell.className="month-header-cell";
+monthCell.textContent="LABOUR";
+
+monthRow.appendChild(monthCell);
+
+const monthSpan=document.createElement("th");
+
+monthSpan.className="month-header";
+monthSpan.colSpan=dates.length;
+monthSpan.textContent=
+formatAttendancePeriod(periodMonth);
+
+monthRow.appendChild(monthSpan);
+
+head.appendChild(monthRow);
+
+const dateRow=document.createElement("tr");
+
+const workerHeader=document.createElement("th");
+
+workerHeader.className="worker-header";
+workerHeader.textContent=
+"Employee / Labour / Name";
+
+dateRow.appendChild(workerHeader);
+
+dates.forEach(date=>{
+
+const th=document.createElement("th");
+
+th.className="date-header";
+
+const d=new Date(date+"T00:00:00");
+
+const day=d.getDay();
+
+th.textContent=d.getDate();
+
+if(day===5){
+th.classList.add("friday-header");
+}
+
+dateRow.appendChild(th);
+
+});
+
+head.appendChild(dateRow);
+
+body.innerHTML="";
+
+workers.forEach((worker,index)=>{
+
+const tr=document.createElement("tr");
+
+const workerCell=document.createElement("td");
+
+workerCell.className="worker-name-cell";
+
+workerCell.innerHTML=`
+
+<div class="worker-matrix-code">
+${worker.employeeCode||""}
+</div>
+
+<div class="worker-matrix-code">
+${worker.code||""}
+</div>
+
+<div class="worker-matrix-name">
+${worker.name||"Unnamed Worker"}
+</div>
+
+`;
+
+tr.appendChild(workerCell);
+
+dates.forEach(date=>{
+
+const td=document.createElement("td");
+
+td.className="attendance-cell";
+
+const d=new Date(date+"T00:00:00");
+
+const isFriday=d.getDay()===5;
+
+if(isFriday){
+td.classList.add("friday-cell");
+}
+
+const status=findAttendanceRecord(
+worker,
+date
+);
+
+if(status==="P"){
+
+td.textContent="P";
+td.classList.add("status-present");
+
+}else if(status==="A"){
+
+td.textContent="A";
+td.classList.add("status-absent");
+
+}else if(status==="L"){
+
+td.textContent="L";
+td.classList.add("status-leave");
+
+}else{
+
+td.textContent="";
+td.classList.add("status-empty");
+
+}
+
+td.onclick=()=>{
+cycleAttendance(index,date);
+};
+
+tr.appendChild(td);
+
+});
+
+body.appendChild(tr);
+
+});
+
+}
+
+/* =========================================================
+MANUAL ATTENDANCE SAVE
+========================================================= */
+
+function saveAttendanceManual(){
+
+localStorage.setItem(
+"palletAttendanceData",
+JSON.stringify(attendanceData)
+);
+
+localStorage.setItem(
+"palletWorkerDetails",
+JSON.stringify(workers)
+);
+
+alert("Attendance saved successfully.");
+
+}
+
+/* =========================================================
+EXPORT ATTENDANCE CSV
+========================================================= */
+
+function exportAttendanceCSV(){
+
+const month=document.getElementById(
+"attendanceMonth"
+).value;
+
+if(!month){
+
+alert("Select attendance period.");
+return;
+
+}
+
+const dates=getAttendancePeriodDates(month);
+
+const rows=[];
+
+rows.push([
+"Employee Code",
+"Labour Code",
+"Labour Name",
+...dates
+]);
+
+workers.forEach(worker=>{
+
+rows.push([
+worker.employeeCode||"",
+worker.code||"",
+worker.name||"",
+...dates.map(date=>
+findAttendanceRecord(worker,date)
+)
+]);
+
+});
+
+const csv=rows
+.map(row=>
+row
+.map(value=>
+`"${String(value).replace(/"/g,'""')}"`
+)
+.join(",")
+)
+.join("\n");
+
+const blob=new Blob(
+[csv],
+{type:"text/csv;charset=utf-8;"}
+);
+
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+
+a.href=url;
+a.download=`Labour_Attendance_${month}.csv`;
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+/* =========================================================
+PALLET PREVIEW
+========================================================= */
+
+function updatePreview(){
+
+const date=document.getElementById(
+"transactionDate"
+).value;
+
+const woodOpening=Number(
+document.getElementById("woodOpening").value
+)||0;
+
+const woodOut=Number(
+document.getElementById("woodOut").value
+)||0;
+
+const woodReturn=Number(
+document.getElementById("woodReturn").value
+)||0;
+
+const woodClosing=
+woodOpening-woodOut+woodReturn;
+
+const plasticOpening=Number(
+document.getElementById("plasticOpening").value
+)||0;
+
+const plasticOut=Number(
+document.getElementById("plasticOut").value
+)||0;
+
+const plasticReturn=Number(
+document.getElementById("plasticReturn").value
+)||0;
+
+const plasticClosing=
+plasticOpening-plasticOut+plasticReturn;
+
+const woodPrice=Number(
+document.getElementById("woodPrice").value
+)||0;
+
+const plasticPrice=Number(
+document.getElementById("plasticPrice").value
+)||0;
+
+const woodValue=woodOut*woodPrice;
+const plasticValue=plasticOut*plasticPrice;
+
+document.getElementById("woodClosing").value=woodClosing;
+document.getElementById("plasticClosing").value=plasticClosing;
+
+document.getElementById("woodValue").value=
+woodValue.toFixed(2);
+
+document.getElementById("plasticValue").value=
+plasticValue.toFixed(2);
+
+document.getElementById("pvDate").textContent=
+date||"-";
+
+document.getElementById("pvWoodOpening").textContent=
+woodOpening;
+
+document.getElementById("pvWoodOut").textContent=
+woodOut;
+
+document.getElementById("pvWoodReturn").textContent=
+woodReturn;
+
+document.getElementById("pvWoodClosing").textContent=
+woodClosing;
+
+document.getElementById("pvPlasticOpening").textContent=
+plasticOpening;
+
+document.getElementById("pvPlasticOut").textContent=
+plasticOut;
+
+document.getElementById("pvPlasticReturn").textContent=
+plasticReturn;
+
+document.getElementById("pvPlasticClosing").textContent=
+plasticClosing;
+
+}
+
+/* =========================================================
+PALLET TRANSACTIONS
+========================================================= */
+
+function getTransactions(){
+
+try{
+
+const data=JSON.parse(
+localStorage.getItem("palletTransactions")||"[]"
+);
+
+return Array.isArray(data)?data:[];
+
+}catch(e){
+
+console.error("Transaction load error:",e);
+
+return [];
+
+}
+
+}
+
+/* =========================================================
+SAVE TRANSACTION
+========================================================= */
+
+function saveTransaction(){
+
+const date=document.getElementById(
+"transactionDate"
+).value;
+
+const branch=document.getElementById(
+"branch"
+).value.trim();
+
+const location=document.getElementById(
+"location"
+).value.trim();
+
+const reference=document.getElementById(
+"reference"
+).value.trim();
+
+if(!date){
+
+alert("Please select transaction date.");
+return;
+
+}
+
+const woodOpening=Number(
+document.getElementById("woodOpening").value
+)||0;
+
+const woodOut=Number(
+document.getElementById("woodOut").value
+)||0;
+
+const woodReturn=Number(
+document.getElementById("woodReturn").value
+)||0;
+
+const woodPrice=Number(
+document.getElementById("woodPrice").value
+)||0;
+
+const woodClosing=
+woodOpening-woodOut+woodReturn;
+
+const woodValue=
+woodOut*woodPrice;
+
+const plasticOpening=Number(
+document.getElementById("plasticOpening").value
+)||0;
+
+const plasticOut=Number(
+document.getElementById("plasticOut").value
+)||0;
+
+const plasticReturn=Number(
+document.getElementById("plasticReturn").value
+)||0;
+
+const plasticPrice=Number(
+document.getElementById("plasticPrice").value
+)||0;
+
+const plasticClosing=
+plasticOpening-plasticOut+plasticReturn;
+
+const plasticValue=
+plasticOut*plasticPrice;
+
+if(woodClosing<0){
+
+alert("Wooden pallet stock cannot be negative.");
+return;
+
+}
+
+if(plasticClosing<0){
+
+alert("Plastic pallet stock cannot be negative.");
+return;
+
+}
+
+const transaction={
+
+id:editingId!==null?
+editingId:
+Date.now(),
+
+date:date,
+branch:branch,
+location:location,
+reference:reference,
+
+woodOpening:woodOpening,
+woodOut:woodOut,
+woodReturn:woodReturn,
+woodClosing:woodClosing,
+woodPrice:woodPrice,
+woodValue:Number(woodValue.toFixed(2)),
+
+plasticOpening:plasticOpening,
+plasticOut:plasticOut,
+plasticReturn:plasticReturn,
+plasticClosing:plasticClosing,
+plasticPrice:plasticPrice,
+plasticValue:Number(plasticValue.toFixed(2)),
+
+totalValue:Number(
+(woodValue+plasticValue).toFixed(2)
+),
+
+savedAt:new Date().toISOString()
+
+};
+
+let transactions=getTransactions();
+
+if(editingId!==null){
+
+const index=transactions.findIndex(
+item=>Number(item.id)===Number(editingId)
+);
+
+if(index!==-1){
+
+transactions[index]=transaction;
+
+}else{
+
+transactions.push(transaction);
+
+}
+
+editingId=null;
+
+}else{
+
+transactions.push(transaction);
+
+}
+
+try{
+
+localStorage.setItem(
+"palletTransactions",
+JSON.stringify(transactions)
+);
+
+}catch(e){
+
+console.error("Transaction save error:",e);
+
+alert("Transaction could not be saved.");
+
+return;
+
+}
+
+renderTransactionHistory();
+
+updateStockFromTransactions();
+
+clearForm(false);
+
+alert("Transaction saved successfully.");
+
+}
+
+/* =========================================================
+UPDATE FORM OPENING ONLY
+========================================================= */
+
+function updateStockFromTransactions(){
+
+const transactions=getTransactions();
+
+let woodOpening=INITIAL_WOOD;
+let plasticOpening=INITIAL_PLASTIC;
+
+if(transactions.length>0){
+
+const sorted=[...transactions].sort(
+(a,b)=>{
+
+const da=new Date(
+(a.date||"")+"T00:00:00"
+).getTime();
+
+const db=new Date(
+(b.date||"")+"T00:00:00"
+).getTime();
+
+if(da!==db){
+return da-db;
+}
+
+return Number(a.id)-Number(b.id);
+
+}
+);
+
+const latest=sorted[sorted.length-1];
+
+woodOpening=
+Number(latest.woodClosing)||
+INITIAL_WOOD;
+
+plasticOpening=
+Number(latest.plasticClosing)||
+INITIAL_PLASTIC;
 
 }
 
 document.getElementById(
-"transactionCount"
-).innerText=transactions.length;
+"woodOpening"
+).value=woodOpening;
+
+document.getElementById(
+"plasticOpening"
+).value=plasticOpening;
+
+updatePreview();
 
 }
 
+/* =========================================================
+CLEAR FORM
+========================================================= */
 
-/* EDIT */
+function clearForm(showMessage=true){
 
-function editTransaction(i){
-
-const t=transactions[i];
-
-editIndex=i;
-
-document.getElementById("date").value=t.date;
-document.getElementById("branch").value=t.branch;
-document.getElementById("location").value=t.location;
-
-document.getElementById("woodOpening").value=t.wo;
-document.getElementById("woodOut").value=t.wout;
-document.getElementById("woodReturn").value=t.wr;
-document.getElementById("woodPrice").value=t.wp;
-
-document.getElementById("plasticOpening").value=t.po;
-document.getElementById("plasticOut").value=t.pout;
-document.getElementById("plasticReturn").value=t.pr;
-document.getElementById("plasticPrice").value=t.pp;
+editingId=null;
 
 document.getElementById(
-"saveButton"
-).innerText="UPDATE TRANSACTION";
+"transactionDate"
+).value=getToday();
 
-calculate();
+document.getElementById(
+"branch"
+).value="MCKML";
+
+document.getElementById(
+"location"
+).value="Warehouse";
+
+document.getElementById(
+"reference"
+).value="";
+
+const transactions=getTransactions();
+
+let woodOpening=INITIAL_WOOD;
+let plasticOpening=INITIAL_PLASTIC;
+
+if(transactions.length>0){
+
+const sorted=[...transactions].sort(
+(a,b)=>{
+
+const da=new Date(
+(a.date||"")+"T00:00:00"
+).getTime();
+
+const db=new Date(
+(b.date||"")+"T00:00:00"
+).getTime();
+
+if(da!==db){
+return da-db;
+}
+
+return Number(a.id)-Number(b.id);
+
+}
+);
+
+const latest=sorted[sorted.length-1];
+
+woodOpening=
+Number(latest.woodClosing)||
+INITIAL_WOOD;
+
+plasticOpening=
+Number(latest.plasticClosing)||
+INITIAL_PLASTIC;
+
+}
+
+document.getElementById(
+"woodOpening"
+).value=woodOpening;
+
+document.getElementById(
+"woodOut"
+).value=0;
+
+document.getElementById(
+"woodReturn"
+).value=0;
+
+document.getElementById(
+"woodClosing"
+).value=woodOpening;
+
+document.getElementById(
+"woodPrice"
+).value=1.2;
+
+document.getElementById(
+"woodValue"
+).value="0.00";
+
+document.getElementById(
+"plasticOpening"
+).value=plasticOpening;
+
+document.getElementById(
+"plasticOut"
+).value=0;
+
+document.getElementById(
+"plasticReturn"
+).value=0;
+
+document.getElementById(
+"plasticClosing"
+).value=plasticOpening;
+
+document.getElementById(
+"plasticPrice"
+).value=10;
+
+document.getElementById(
+"plasticValue"
+).value="0.00";
+
+updatePreview();
+
+if(showMessage){
+alert("Form cleared.");
+}
+
+}
+
+/* =========================================================
+RENDER TRANSACTION HISTORY
+========================================================= */
+
+function renderTransactionHistory(){
+
+const body=document.getElementById(
+"historyBody"
+);
+
+if(!body){
+return;
+}
+
+const transactions=getTransactions();
+
+body.innerHTML="";
+
+if(transactions.length===0){
+
+const tr=document.createElement("tr");
+const td=document.createElement("td");
+
+td.colSpan=14;
+td.textContent="No transactions found.";
+td.style.textAlign="center";
+td.style.color="#64748b";
+
+tr.appendChild(td);
+body.appendChild(tr);
+
+return;
+
+}
+
+const sorted=[...transactions].sort(
+(a,b)=>{
+
+const da=new Date(
+(a.date||"")+"T00:00:00"
+).getTime();
+
+const db=new Date(
+(b.date||"")+"T00:00:00"
+).getTime();
+
+if(db!==da){
+return db-da;
+}
+
+return Number(b.id)-Number(a.id);
+
+}
+);
+
+sorted.forEach(transaction=>{
+
+const tr=document.createElement("tr");
+
+const values=[
+
+transaction.date||"",
+transaction.branch||"",
+transaction.location||"",
+transaction.reference||"",
+transaction.woodOpening??0,
+transaction.woodOut??0,
+transaction.woodReturn??0,
+transaction.woodClosing??0,
+transaction.plasticOpening??0,
+transaction.plasticOut??0,
+transaction.plasticReturn??0,
+transaction.plasticClosing??0,
+Number(transaction.totalValue||0).toFixed(2)
+
+];
+
+values.forEach(value=>{
+
+const td=document.createElement("td");
+
+td.textContent=value;
+
+tr.appendChild(td);
+
+});
+
+const actionTd=document.createElement("td");
+
+const editButton=document.createElement("button");
+
+editButton.className=
+"action-btn edit-btn";
+
+editButton.textContent="Edit";
+
+editButton.onclick=()=>{
+editTransaction(transaction.id);
+};
+
+const deleteButton=document.createElement("button");
+
+deleteButton.className=
+"action-btn delete-btn";
+
+deleteButton.textContent="Delete";
+
+deleteButton.onclick=()=>{
+deleteTransaction(transaction.id);
+};
+
+actionTd.appendChild(editButton);
+actionTd.appendChild(deleteButton);
+
+tr.appendChild(actionTd);
+
+body.appendChild(tr);
+
+});
+
+}
+
+/* =========================================================
+EDIT TRANSACTION
+========================================================= */
+
+function editTransaction(id){
+
+const transactions=getTransactions();
+
+const transaction=transactions.find(
+item=>Number(item.id)===Number(id)
+);
+
+if(!transaction){
+
+alert("Transaction not found.");
+return;
+
+}
+
+editingId=transaction.id;
+
+document.getElementById(
+"transactionDate"
+).value=
+transaction.date||getToday();
+
+document.getElementById(
+"branch"
+).value=
+transaction.branch||"MCKML";
+
+document.getElementById(
+"location"
+).value=
+transaction.location||"Warehouse";
+
+document.getElementById(
+"reference"
+).value=
+transaction.reference||"";
+
+document.getElementById(
+"woodOpening"
+).value=
+transaction.woodOpening??INITIAL_WOOD;
+
+document.getElementById(
+"woodOut"
+).value=
+transaction.woodOut??0;
+
+document.getElementById(
+"woodReturn"
+).value=
+transaction.woodReturn??0;
+
+document.getElementById(
+"woodClosing"
+).value=
+transaction.woodClosing??INITIAL_WOOD;
+
+document.getElementById(
+"woodPrice"
+).value=
+transaction.woodPrice??1.2;
+
+document.getElementById(
+"plasticOpening"
+).value=
+transaction.plasticOpening??INITIAL_PLASTIC;
+
+document.getElementById(
+"plasticOut"
+).value=
+transaction.plasticOut??0;
+
+document.getElementById(
+"plasticReturn"
+).value=
+transaction.plasticReturn??0;
+
+document.getElementById(
+"plasticClosing"
+).value=
+transaction.plasticClosing??INITIAL_PLASTIC;
+
+document.getElementById(
+"plasticPrice"
+).value=
+transaction.plasticPrice??10;
+
+updatePreview();
 
 window.scrollTo({
 top:0,
@@ -1816,265 +2257,227 @@ behavior:"smooth"
 
 }
 
+/* =========================================================
+DELETE TRANSACTION
+========================================================= */
 
-/* DELETE */
+function deleteTransaction(id){
 
-async function deleteTransaction(i){
+const transactions=getTransactions();
+
+const exists=transactions.some(
+item=>Number(item.id)===Number(id)
+);
+
+if(!exists){
+return;
+}
 
 if(!confirm("Delete this transaction?")){
 return;
 }
 
-const t=transactions[i];
-
-if(!db){
-
-alert(
-"Database connection is not available."
+const updated=transactions.filter(
+item=>Number(item.id)!==Number(id)
 );
 
-return;
-
-}
-
-try{
-
-const result =
-await db
-.from("pallet_transactions")
-.delete()
-.eq("id",t.id);
-
-if(result.error){
-
-alert(
-"Delete failed:\n"+
-result.error.message
+localStorage.setItem(
+"palletTransactions",
+JSON.stringify(updated)
 );
 
-return;
+editingId=null;
+
+renderTransactionHistory();
+updateStockFromTransactions();
+clearForm(false);
+
+alert("Transaction deleted successfully.");
 
 }
 
-await loadTransactions();
-
-}
-catch(error){
-
-alert(
-"Delete error:\n"+
-(error.message||error)
-);
-
-}
-
-}
-
-
-/* CLEAR ALL */
-
-async function clearAllTransactions(){
-
-if(!transactions.length){
-return;
-}
-
-if(!confirm(
-"Delete ALL transactions? This cannot be undone."
-)){
-return;
-}
-
-if(!db){
-
-alert(
-"Database connection is not available."
-);
-
-return;
-
-}
-
-try{
-
-const result =
-await db
-.from("pallet_transactions")
-.delete()
-.gte("id",0);
-
-if(result.error){
-
-alert(
-"Clear All failed:\n"+
-result.error.message
-);
-
-return;
-
-}
-
-await loadTransactions();
-
-}
-catch(error){
-
-alert(
-"Clear All error:\n"+
-(error.message||error)
-);
-
-}
-
-}
-
-
-/* CLEAR FORM */
-
-function clearForm(){
-
-editIndex=-1;
-
-const now=new Date();
-
-const localDate =
-now.getFullYear()+"-"+
-String(now.getMonth()+1).padStart(2,"0")+"-"+
-String(now.getDate()).padStart(2,"0");
-
-document.getElementById("date").value=localDate;
-
-document.getElementById("branch").value="";
-document.getElementById("location").value="";
-
-[
-"woodOpening",
-"woodOut",
-"woodReturn",
-"woodPrice",
-"plasticOpening",
-"plasticOut",
-"plasticReturn",
-"plasticPrice"
-].forEach(function(id){
-
-document.getElementById(id).value=0;
-
-});
-
-document.getElementById(
-"saveButton"
-).innerText="+ ADD TRANSACTION";
-
-calculate();
-
-}
-
-
-/* CSV */
+/* =========================================================
+EXPORT PALLET CSV
+========================================================= */
 
 function exportCSV(){
 
-if(!transactions.length){
+const transactions=getTransactions();
 
-alert(
-"No transactions to export."
-);
+if(transactions.length===0){
 
+alert("No pallet transactions available to export.");
 return;
 
 }
 
-const headers=[
+const rows=[
 
+[
 "Date",
 "Branch",
 "Location",
-
+"Vehicle",
 "Wood Opening",
 "Wood Out",
 "Wood Return",
-"Wood Stock",
-"Wood Price",
-
+"Wood Closing",
+"Wood Unit Price OMR",
+"Wood Value OMR",
 "Plastic Opening",
 "Plastic Out",
 "Plastic Return",
-"Plastic Stock",
-"Plastic Price",
-
-"Total Stock",
-"Total Value"
-
-];
-
-const rows=transactions.map(function(t){
-
-return [
-
-t.date,
-t.branch,
-t.location,
-
-t.wo,
-t.wout,
-t.wr,
-t.ws,
-t.wp,
-
-t.po,
-t.pout,
-t.pr,
-t.ps,
-t.pp,
-
-t.totalStock,
-Number(t.totalValue||0).toFixed(3)
+"Plastic Closing",
+"Plastic Unit Price OMR",
+"Plastic Value OMR",
+"Total Value OMR"
+]
 
 ];
+
+transactions.forEach(t=>{
+
+rows.push([
+
+t.date||"",
+t.branch||"",
+t.location||"",
+t.reference||"",
+t.woodOpening??0,
+t.woodOut??0,
+t.woodReturn??0,
+t.woodClosing??0,
+t.woodPrice??0,
+t.woodValue??0,
+t.plasticOpening??0,
+t.plasticOut??0,
+t.plasticReturn??0,
+t.plasticClosing??0,
+t.plasticPrice??0,
+t.plasticValue??0,
+t.totalValue??0
+
+]);
 
 });
 
-const csv=[headers,...rows]
-.map(function(row){
-
-return row.map(function(v){
-
-return '"'+
-String(v).replaceAll('"','""')+
-'"';
-
-}).join(",");
-
-}).join("\n");
+const csv=rows
+.map(row=>
+row
+.map(value=>
+`"${String(value).replace(/"/g,'""')}"`
+)
+.join(",")
+)
+.join("\n");
 
 const blob=new Blob(
 [csv],
 {type:"text/csv;charset=utf-8;"}
 );
 
+const url=URL.createObjectURL(blob);
+
 const a=document.createElement("a");
 
-a.href=URL.createObjectURL(blob);
+a.href=url;
+a.download=
+`Pallet_Transactions_${getToday()}.csv`;
 
-a.download="pallet_tracker.csv";
+document.body.appendChild(a);
 
 a.click();
 
-URL.revokeObjectURL(a.href);
+document.body.removeChild(a);
+
+URL.revokeObjectURL(url);
 
 }
 
+/* =========================================================
+INITIAL TRANSACTION LOAD
+========================================================= */
 
-/* START */
+function initializePalletTransactions(){
 
-window.addEventListener(
+renderTransactionHistory();
+updateStockFromTransactions();
+updatePreview();
+
+}
+
+/* =========================================================
+START APP
+========================================================= */
+
+function startApp(){
+
+renderTransactionHistory();
+
+updateStockFromTransactions();
+
+updatePreview();
+
+document.getElementById(
+"headerDate"
+).value=getToday();
+
+document.getElementById(
+"transactionDate"
+).value=getToday();
+
+const attendanceMonth=
+document.getElementById(
+"attendanceMonth"
+);
+
+if(attendanceMonth){
+
+attendanceMonth.value=
+getAttendancePeriodMonth();
+
+}
+
+updateClock();
+
+updatePreview();
+
+renderWorkerDetails();
+
+renderAttendance();
+
+checkHourlyAlert();
+
+}
+
+/* =========================================================
+AUTO LOGIN
+========================================================= */
+
+document.addEventListener(
 "DOMContentLoaded",
 function(){
 
-updateLiveClock();
+updateClock();
 
-checkLogin();
+const loggedIn=
+localStorage.getItem("palletLoggedIn");
+
+if(loggedIn==="true"){
+
+document.getElementById(
+"loginScreen"
+).style.display="none";
+
+document.getElementById(
+"app"
+).style.display="block";
+
+prepareAlertAudio();
+
+startApp();
+
+}
 
 }
 );
